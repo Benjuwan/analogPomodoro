@@ -69,19 +69,6 @@ const TheClock = styled.div`
     display: none;
   }
 
-  & ul {
-    list-style: none;
-
-    & li {
-      width: 2.5em;
-      height: 1px;
-      position: absolute;
-      margin: auto;
-      inset: 0;
-      background-color: #333;
-    }
-  }
-  
   &::before {
     content: "";
     width: 25px;
