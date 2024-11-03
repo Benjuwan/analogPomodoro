@@ -1,56 +1,58 @@
 import styled from "styled-components";
 import { useEffect } from "react";
+import { ClockHands } from "./utils/ClockHands";
 
 export const Clock = () => {
-    useEffect(() => {
-        const clock = document.querySelector('.clock');
-        clock?.classList.add('hiddenClock');
-        const theTimeout: number = setTimeout(() => clock?.classList.remove('hiddenClock'), 1000);
+  useEffect(() => {
+    const clock = document.querySelector('.clock');
+    clock?.classList.add('hiddenClock');
+    const theTimeout: number = setTimeout(() => clock?.classList.remove('hiddenClock'), 1000);
 
-        const currTimeCalc: () => number = () => {
-            const hours = clock?.querySelector('#short');
-            const minutes = clock?.querySelector('#long');
-            const seconds = clock?.querySelector('#sec');
+    const currTimeCalc: () => number = () => {
+      const hours = clock?.querySelector('#short');
+      const minutes = clock?.querySelector('#long');
+      const seconds = clock?.querySelector('#sec');
 
-            const theInterval: number = setInterval(() => {
-                const currHours = new Date().getHours();
-                const currMinutes = new Date().getMinutes();
-                const currSeconds = new Date().getSeconds();
+      const theInterval: number = setInterval(() => {
+        const currHours = new Date().getHours();
+        const currMinutes = new Date().getMinutes();
+        const currSeconds = new Date().getSeconds();
 
-                const targetHoursDeg = Math.floor((currHours * 30) + (currMinutes * 0.5)); // 360/12（30度ずつ進む）
-                const targetMinutesDeg = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
-                const targetSecondsDeg = Math.floor(currSeconds * 6); // 360/60（6度ずつ進む）
+        const targetHoursDeg = Math.floor((currHours * 30) + (currMinutes * 0.5)); // 360/12（30度ずつ進む）
+        const targetMinutesDeg = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
+        const targetSecondsDeg = Math.floor(currSeconds * 6); // 360/60（6度ずつ進む）
 
-                if (hours instanceof HTMLElement) {
-                    hours.style.setProperty('rotate', `${targetHoursDeg}deg`);
-                }
-
-                if (minutes instanceof HTMLElement) {
-                    minutes.style.setProperty('rotate', `${targetMinutesDeg}deg`);
-                }
-
-                if (seconds instanceof HTMLElement) {
-                    seconds.style.setProperty('rotate', `${targetSecondsDeg}deg`);
-                }
-            }, 1000);
-
-            return theInterval;
+        if (hours instanceof HTMLElement) {
+          hours.style.setProperty('rotate', `${targetHoursDeg}deg`);
         }
-        const theInterval: number = currTimeCalc();
 
-        return () => {
-            clearTimeout(theTimeout);
-            clearInterval(theInterval);
+        if (minutes instanceof HTMLElement) {
+          minutes.style.setProperty('rotate', `${targetMinutesDeg}deg`);
         }
-    }, []);
 
-    return (
-        <TheClock className="clock">
-            <div id="long">&nbsp;</div>
-            <div id="short">&nbsp;</div>
-            <div id="sec">&nbsp;</div>
-        </TheClock>
-    );
+        if (seconds instanceof HTMLElement) {
+          seconds.style.setProperty('rotate', `${targetSecondsDeg}deg`);
+        }
+      }, 1000);
+
+      return theInterval;
+    }
+    const theInterval: number = currTimeCalc();
+
+    return () => {
+      clearTimeout(theTimeout);
+      clearInterval(theInterval);
+    }
+  }, []);
+
+  return (
+    <TheClock className="clock">
+      <div id="long">&nbsp;</div>
+      <div id="short">&nbsp;</div>
+      <div id="sec">&nbsp;</div>
+      <ClockHands />
+    </TheClock>
+  );
 }
 
 const TheClock = styled.div`
@@ -65,6 +67,19 @@ const TheClock = styled.div`
 
   &.hiddenClock {
     display: none;
+  }
+
+  & ul {
+    list-style: none;
+
+    & li {
+      width: 2.5em;
+      height: 1px;
+      position: absolute;
+      margin: auto;
+      inset: 0;
+      background-color: #333;
+    }
   }
   
   &::before {
