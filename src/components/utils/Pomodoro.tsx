@@ -7,10 +7,10 @@ export const Pomodoro = () => {
     return (
         <ThePomodoro>
             {isPomodoroDone ?
-                <p>ポモドーロ終了です。30分間休憩してください。</p> :
+                <p>ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
-                    <h2>pomodoro/{pomodoro + 1}</h2>
-                    {isFocus && <p>ポモドーロ中です。25分間タスクに集中してください。</p>}
+                    <h2>pomodoro<br />（{pomodoro + 1}/4）</h2>
+                    {isFocus && <p>ポモドーロ開始です。25分間タスクに集中してください。</p>}
                     {isBreak && <p>インターバルです。5分間休憩してください。</p>}
                 </>
             }
@@ -22,6 +22,18 @@ export const Pomodoro = () => {
 const ThePomodoro = styled.section`
 margin: 2em auto;
 text-align: center;
+
+& h2 {
+    font-size: 2rem;
+    letter-spacing: .25em;
+    line-height: 1.5;
+    margin-bottom: 1em;
+}
+
+& p {
+    font-size: 1.6rem;
+    margin-bottom: .5em;
+}
 
 & button {
     appearance: none;
@@ -51,6 +63,14 @@ text-align: center;
 }
 
 @media screen and (min-width:1025px) {
+    & h2 {
+        font-size: 20px;
+    }
+
+    & p {
+        font-size: 16px;
+    }
+
     & button {
         font-size: 18px;
         line-height: 44px;

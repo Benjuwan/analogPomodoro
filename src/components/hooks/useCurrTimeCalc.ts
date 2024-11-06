@@ -9,22 +9,24 @@ export const useCurrTimeCalc = () => {
             const currMinutes = new Date().getMinutes();
             const currSeconds = new Date().getSeconds();
 
-            const targetHoursDeg = Math.floor((currHours * 30) + (currMinutes * 0.5)); // 360/12（30度ずつ進む）
-            const targetMinutesDeg = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
-            const targetSecondsDeg = Math.floor(currSeconds * 6); // 360/60（6度ずつ進む）
+            const targetHoursDeg: number = Math.floor((currHours * 30) + (currMinutes * 0.5)); // 360/12（30度ずつ進む）
+            const targetMinutesDeg: number = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
+            const targetSecondsDeg: number = Math.floor(currSeconds * 6); // 360/60（6度ずつ進む）
 
+            /* 12:00 の位置をスタート基準にするため各種 90deg を加算して表示角度を調整 */
             if (hours instanceof HTMLElement) {
-                hours.style.setProperty('rotate', `${targetHoursDeg}deg`);
+                hours.style.setProperty('rotate', `${90 + targetHoursDeg}deg`);
             }
 
             if (minutes instanceof HTMLElement) {
-                minutes.style.setProperty('rotate', `${targetMinutesDeg}deg`);
+                minutes.style.setProperty('rotate', `${90 + targetMinutesDeg}deg`);
             }
 
             if (seconds instanceof HTMLElement) {
-                seconds.style.setProperty('rotate', `${targetSecondsDeg}deg`);
+                seconds.style.setProperty('rotate', `${90 + targetSecondsDeg}deg`);
             }
         }, 1000);
+
         return theInterval;
     }
 
