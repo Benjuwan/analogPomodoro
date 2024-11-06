@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
+import { Pomodoro } from "./utils/Pomodoro";
 import { ClockHands } from "./utils/ClockHands";
 import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
+
+import pomodoroImg from "../assets/pomodoro.svg";
 
 export const Clock = () => {
   const theClockRef = useRef<HTMLDivElement | null>(null);
@@ -18,26 +21,40 @@ export const Clock = () => {
   }, []);
 
   return (
-    <TheClock ref={theClockRef} className="clock">
-      <div id="long">&nbsp;</div>
-      <div id="short">&nbsp;</div>
-      <div id="sec">&nbsp;</div>
-      <ClockHands />
-    </TheClock>
+    <>
+      <Pomodoro />
+      <TheClock ref={theClockRef} className="clock">
+        <div id="long">&nbsp;</div>
+        <div id="short">&nbsp;</div>
+        <div id="sec">&nbsp;</div>
+        <ClockHands />
+        <figure className="pomodoroImg"><img src={pomodoroImg} alt="ポモドーロ期間を表す半月形式の視覚的画像" /></figure>
+      </TheClock>
+    </>
   );
 }
 
 const TheClock = styled.div`
-  display: none;
-  overflow: hidden;
-  width: 500px;
-  height: 500px;
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  background-color: #dadada;
-  margin: auto;
-  position: relative;
-  rotate: 90deg; /* 12:00 の位置をスタート基準にするため 90deg を指定して表示角度調整 */ 
+display: none;
+overflow: hidden;
+width: 500px;
+height: 500px;
+aspect-ratio: 1/1;
+border-radius: 50%;
+background-color: #dadada;
+margin: auto;
+position: relative;
+
+  & .pomodoroImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: left top;
+    transform: translate(0%, -50%);
+    mix-blend-mode: color;
+    transition: rotate .5s;
+    visibility: hidden;
+  }
 
   &::before {
     content: "";
