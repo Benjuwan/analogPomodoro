@@ -37,7 +37,7 @@ list-style: none;
 
 @media screen and (min-width: 700px) {
     & li {
-        transform: translateX(18em);
+        transform: translateX(14em);
     }
 }
 `;
