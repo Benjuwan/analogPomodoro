@@ -1,20 +1,26 @@
 import styled from "styled-components";
 import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
 
+import noticeSound from "../../assets/notice.mp3";
+
 export const Pomodoro = () => {
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive } = useHandlePomodoro();
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro();
 
     return (
         <ThePomodoro>
             {isPomodoroDone ?
-                <p>ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
+                <p>お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
-                    <h2>pomodoro<br />（{pomodoro + 1}/4）</h2>
-                    {isFocus && <p>ポモドーロ開始です。25分間タスクに集中してください。</p>}
-                    {isBreak && <p>インターバルです。5分間休憩してください。</p>}
+                    <h2>Pomodoro<br />（{pomodoro === 0 ? pomodoro + 1 : pomodoro}/4）</h2>
+                    {isFocus && <p className="pomodoroFocus">ポモドーロ開始です。25分間タスクに集中してください。</p>}
+                    {isBreak && <p className="pomodoroBreak">インターバルです。5分間休憩してください。</p>}
                 </>
             }
-            <button type="button" disabled={isBtnActive} onClick={handlePomodoro}>{isBtnActive ? 'ポモドーロ中' : 'ポモドーロ開始'}</button>
+            {isBtnActive ?
+                <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
+                <button type="button" onClick={() => handlePomodoro()}>ポモドーロ開始</button>
+            }
+            <audio id="noticeSound" src={noticeSound} hidden>&nbsp;</audio>
         </ThePomodoro>
     );
 }
@@ -22,23 +28,39 @@ export const Pomodoro = () => {
 const ThePomodoro = styled.section`
 margin: 2em auto;
 text-align: center;
+padding: 0 2.5%;
 
 & h2 {
     font-size: 2rem;
     letter-spacing: .25em;
     line-height: 1.5;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 }
 
 & p {
+    width: fit-content;
     font-size: 1.6rem;
-    margin-bottom: .5em;
+    border-radius: .4rem;
+    padding: 1em;
+    margin: 0 auto 2em;
+    background-color: #dadada;
+    border: 3px solid #a8a8a8;
+
+    &.pomodoroFocus {
+        background-color: #acedff;
+        border-color: #73e1ff;
+    }
+    
+    &.pomodoroBreak {
+        background-color: #e9ffbc;
+        border-color: #cdff6c;
+    }
 }
 
 & button {
     appearance: none;
     background-color: #333;
-    border: 1px solid transparent;
+    border: 3px solid transparent;
     color: #fff;
     padding: 0 2.5em;
     font-size: 1.8rem;
@@ -69,6 +91,7 @@ text-align: center;
 
     & p {
         font-size: 16px;
+        border-radius: 4px;
     }
 
     & button {

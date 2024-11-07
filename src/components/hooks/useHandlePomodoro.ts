@@ -1,19 +1,35 @@
 import { useState } from "react";
+import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
-export const useHandlePomodoro = () => {
-    let pomodoroCounter: number = 1;
+type handlePomodoroType = () => {
+    handlePomodoro: (pomodoro?: number) => void;
+    isBreak: boolean;
+    isFocus: boolean;
+    isPomodoroDone: boolean;
+    pomodoro: number;
+    isBtnActive: boolean;
+    handlePause: () => void;
+    isPause: boolean;
+}
 
+export const useHandlePomodoro: handlePomodoroType = () => {
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
     const [isPomodoroDone, setPomodoroDone] = useState<boolean>(false);
-    const [pomodoro, setPomodoro] = useState<number>(0); // 初期値は0
+    const [pomodoro, setPomodoro] = useState<number>(0); // 初期値は0（1にしてしまうと pomodoroCounter の初期値（1）と差分が生まれず更新されないため）
+    let pomodoroCounter: number = pomodoro > 1 ? pomodoro : 1;
     const [isBtnActive, setBtnActive] = useState<boolean>(false);
 
+    /* ポモドーロの視覚的画像の表示に関する処理 */
+    const { _beginPomodoroImgEffect, _endPomodoroImgEffect } = useHandlePomodoroImgEffect();
+
+    /* ポモドーロのモード（タスク／休憩）チェンジに関する処理 */
     const _ctrlPomodoroSignal: () => void = () => {
         setFocus(true);
         setBreak(false);
     }
 
+    /* 初期化（リセット）に関する処理 */
     const _initAllReset: (theInterval: number) => void = (theInterval: number) => {
         clearInterval(theInterval);
         pomodoroCounter = 1;
@@ -21,37 +37,38 @@ export const useHandlePomodoro = () => {
         setBtnActive(false);
     }
 
-    const _beginPomodoro: () => void = () => {
-        const pomodoroImg: HTMLElement | null = document.querySelector('.pomodoroImg');
-        if (pomodoroImg !== null) {
-            const currMinutes: number = new Date().getMinutes();
-            const targetMinutesDeg: number = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
-            pomodoroImg.style.setProperty('visibility', 'visible');
-            pomodoroImg.style.setProperty('rotate', `${targetMinutesDeg}deg`);
-        }
-
-        const clockLong: HTMLElement | null = document.querySelector('#long');
-        if (clockLong) {
-            clockLong.style.setProperty('background-color', '#ff2727');
+    /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
+    const _notice: () => void = () => {
+        const audioElm: HTMLAudioElement | null = document.querySelector('#noticeSound');
+        if (audioElm) {
+            audioElm.play();
         }
     }
 
-    const _endPomodoro: () => void = () => {
-        const pomodoroImg: HTMLElement | null = document.querySelector('.pomodoroImg');
-        if (pomodoroImg !== null) {
-            pomodoroImg.style.setProperty('visibility', 'hidden');
+    /* ポモドーロの一時停止及び当該ポモドーロの再スタートに関する処理 */
+    const [isPause, setPause] = useState<boolean>(true);
+    const [intervalValue, setIntervalValue] = useState<number>(0);
+    const handlePause: () => void = () => {
+        isFocus && setFocus(false);
+        isBreak && setBreak(false);
+
+        console.log(pomodoroCounter, pomodoro);
+        if (isPause) {
+            setPomodoro((_prevPomodoro) => pomodoroCounter);
+            alert('ポモドーロが中断されました');
+            clearInterval(intervalValue);
+        } else {
+            handlePomodoro(pomodoro);
         }
 
-        const clockLong: HTMLElement | null = document.querySelector('#long');
-        if (clockLong) {
-            clockLong.style.setProperty('background-color', '#333');
-        }
+        // セッター関数は再レンダリングのトリガーなので、初期表示時は（初期設定時の）true のフローに進み、次レンダリング時には false のフローへ進む
+        setPause(!isPause);
     }
 
-    // 予期せぬ中断があった場合は、そのポモドーロをリセットする必要があります
-
-    const handlePomodoro: () => void = () => {
-        _beginPomodoro();
+    /* ポモドーロ本体の機能に関する処理 */
+    const handlePomodoro: (pomodoro?: number) => void = (pomodoro?: number) => {
+        _notice();
+        _beginPomodoroImgEffect();
 
         setBtnActive(true);
         setFocus(true);
@@ -68,22 +85,25 @@ export const useHandlePomodoro = () => {
         let countTimer: number = 0;
         const theInterval: number = setInterval(() => {
             if (pomodoroCounter === 4 && countTimer >= term) {
+                _notice();
                 _initAllReset(theInterval);
                 _ctrlPomodoroSignal();
-                _endPomodoro();
+                _endPomodoroImgEffect();
                 setPomodoroDone(true);
             }
 
             else if (countTimer === theBreak) {
+                _notice();
                 setFocus(false);
                 setBreak(true);
                 countTimer++;
             }
 
             else if (countTimer === term) {
-                const currPomodoro: number = pomodoroCounter++;
+                _notice();
+                const currPomodoro: number = pomodoro ? pomodoro + 1 : pomodoroCounter++;
                 setPomodoro((_prevPomodoro) => currPomodoro);
-                _beginPomodoro();
+                _beginPomodoroImgEffect();
                 _ctrlPomodoroSignal();
                 countTimer = 1; // 秒数カウントリセット
             }
@@ -92,9 +112,11 @@ export const useHandlePomodoro = () => {
                 countTimer++;
             }
 
-            console.log(countTimer, pomodoroCounter);
+            console.log(countTimer, pomodoroCounter, pomodoro);
         }, 1000);
+
+        setIntervalValue((_prevIntervalValue) => theInterval);
     }
 
-    return { handlePomodoro, isBreak, isFocus, isPomodoroDone, pomodoro, isBtnActive }
+    return { handlePomodoro, isBreak, isFocus, isPomodoroDone, pomodoro, isBtnActive, handlePause, isPause }
 }
