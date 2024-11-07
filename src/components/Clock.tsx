@@ -101,25 +101,25 @@ position: relative;
   }
 
 @media screen and (min-width: 700px) {
-width: 500px;
-height: 500px;
+width: 400px;
+height: 400px;
 
   & div {
     &#long {
-      width: 230px;
+      width: 180px;
       height: 3px;
-      translate: 9% 0%;
+      translate: 11% 0%;
     }
 
     &#short {
-      width: 125px;
+      width: 100px;
       height: 5px;
-      translate: 99% 0%;
+      translate: 101% 0%;
     }
 
     &#sec {
-      width: 245px;
-      translate: 3% 0%;
+      width: 190px;
+      translate: 5% 0%;
     }
   }
 }

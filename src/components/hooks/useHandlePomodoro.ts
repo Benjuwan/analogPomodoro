@@ -38,8 +38,8 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     }
 
     /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
-    const _notice: () => void = () => {
-        const audioElm: HTMLAudioElement | null = document.querySelector('#noticeSound');
+    const _notice: (audioElmStr: string) => void = (audioElmStr: string) => {
+        const audioElm: HTMLAudioElement | null = document.querySelector(`#${audioElmStr}`);
         if (audioElm) {
             audioElm.play();
         }
@@ -67,7 +67,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
     /* ポモドーロ本体の機能に関する処理 */
     const handlePomodoro: (pomodoro?: number) => void = (pomodoro?: number) => {
-        _notice();
+        _notice('startSound');
         _beginPomodoroImgEffect();
 
         setBtnActive(true);
@@ -85,7 +85,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         let countTimer: number = 0;
         const theInterval: number = setInterval(() => {
             if (pomodoroCounter === 4 && countTimer >= term) {
-                _notice();
+                _notice('doneSound');
                 _initAllReset(theInterval);
                 _ctrlPomodoroSignal();
                 _endPomodoroImgEffect();
@@ -93,14 +93,14 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             }
 
             else if (countTimer === theBreak) {
-                _notice();
+                _notice('doneSound');
                 setFocus(false);
                 setBreak(true);
                 countTimer++;
             }
 
             else if (countTimer === term) {
-                _notice();
+                _notice('startSound');
                 const currPomodoro: number = pomodoro ? pomodoro + 1 : pomodoroCounter++;
                 setPomodoro((_prevPomodoro) => currPomodoro);
                 _beginPomodoroImgEffect();
