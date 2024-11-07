@@ -4,7 +4,7 @@ import { useState } from "react";
 export const ClockHands = () => {
     const ClockHandsAry: string[] = [];
     for (let i = 1; i <= 12; i++) {
-        ClockHandsAry.push(`rotate(${30 * i}deg)`);
+        ClockHandsAry.push(`${30 * i}deg`);
     }
     const [theClockHandsAry] = useState<string[]>(ClockHandsAry);
 
@@ -14,7 +14,7 @@ export const ClockHands = () => {
                 theClockHandsAry.length > 0 &&
                 <TheClockHands>
                     {theClockHandsAry.map(clockHandsElm => (
-                        <li key={clockHandsElm} style={{ 'transform': `${clockHandsElm} translateX(250px)` }}>&nbsp;</li>
+                        <li key={clockHandsElm} style={{ 'rotate': `${clockHandsElm}` }}>&nbsp;</li>
                     ))}
                 </TheClockHands>
             }
@@ -32,5 +32,12 @@ list-style: none;
   margin: auto;
   inset: 0;
   background-color: #333;
+  transform: translateX(calc(100vw/3));
+}
+
+@media screen and (min-width: 700px) {
+    & li {
+        transform: translateX(18em);
+    }
 }
 `;
