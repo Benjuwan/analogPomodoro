@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
 
-import startSound from "../../assets/start.mp3";
-import doneSound from "../../assets/done.mp3";
+import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
+import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
 
 export const Pomodoro = () => {
     const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro();
