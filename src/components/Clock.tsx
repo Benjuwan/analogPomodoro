@@ -8,9 +8,9 @@ import pomodoroImg from "../assets/pomodoro.svg";
 
 export const Clock = () => {
   const theClockRef = useRef<HTMLDivElement | null>(null);
+  const { currTimeCalc } = useCurrTimeCalc();
 
   useEffect(() => {
-    const { currTimeCalc } = useCurrTimeCalc();
     const theInterval: number = currTimeCalc(theClockRef);
     const theTimeout: number = setTimeout(() => theClockRef.current?.style.setProperty('display', 'block'), 1000);
 
@@ -42,7 +42,6 @@ height: calc(100vw/1.5);
 aspect-ratio: 1/1;
 border-radius: 50%;
 background-color: #dadada;
-filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
 margin: 0 auto 2.5em;
 position: relative;
 
@@ -103,6 +102,7 @@ position: relative;
 @media screen and (min-width: 700px) {
 width: 400px;
 height: 400px;
+filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
 
   & div {
     &#long {
