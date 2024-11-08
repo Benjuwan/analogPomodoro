@@ -12,14 +12,14 @@ export const Pomodoro = () => {
             {isPomodoroDone ?
                 <p>お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
-                    <h2>Pomodoro<br />（{isPause ? pomodoro + 1 : pomodoro}/4）</h2>
+                    <h2>Pomodoro<br />（{pomodoro}/4）</h2>
                     {isFocus && <p className="pomodoroFocus">ポモドーロ開始です。25分間タスクに集中してください。</p>}
                     {isBreak && <p className="pomodoroBreak">インターバルです。5分間休憩してください。</p>}
                 </>
             }
             {isBtnActive ?
                 <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button type="button" onClick={() => handlePomodoro()}>ポモドーロ開始</button>
+                <button type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
             }
             <audio id="startSound" src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" src={doneSound} hidden>&nbsp;</audio>

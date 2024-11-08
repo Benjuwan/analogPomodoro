@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = () => {
-    handlePomodoro: (pomodoro?: number) => void;
+    handlePomodoro: () => void;
     isBreak: boolean;
     isFocus: boolean;
     isPomodoroDone: boolean;
@@ -13,10 +13,11 @@ type handlePomodoroType = () => {
 }
 
 export const useHandlePomodoro: handlePomodoroType = () => {
+
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
     const [isPomodoroDone, setPomodoroDone] = useState<boolean>(false);
-    const [pomodoro, setPomodoro] = useState<number>(0); // 初期値は0（1にしてしまうと pomodoroCounter の初期値（1）と差分が生まれず更新されないため）
+    const [pomodoro, setPomodoro] = useState<number>(1);
     let pomodoroCounter: number = pomodoro > 1 ? pomodoro : 1;
     const [isBtnActive, setBtnActive] = useState<boolean>(false);
 
@@ -33,7 +34,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     const _initAllReset: (theInterval: number) => void = (theInterval: number) => {
         clearInterval(theInterval);
         pomodoroCounter = 1;
-        setPomodoro((_prevPomodoro) => 0);
+        setPomodoro((_prevPomodoro) => 1);
         setBtnActive(false);
     }
 
@@ -52,13 +53,12 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         isFocus && setFocus(false);
         isBreak && setBreak(false);
 
-        console.log(pomodoroCounter, pomodoro);
         if (isPause) {
-            setPomodoro((_prevPomodoro) => pomodoroCounter);
+            setPomodoro((_prevPomodoro) => pomodoro);
             alert('ポモドーロが中断されました');
             clearInterval(intervalValue);
         } else {
-            handlePomodoro(pomodoro);
+            handlePomodoro();
         }
 
         // セッター関数は再レンダリングのトリガーなので、初期表示時は（初期設定時の）true のフローに進み、次レンダリング時には false のフローへ進む
@@ -66,7 +66,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     }
 
     /* ポモドーロ本体の機能に関する処理 */
-    const handlePomodoro: (pomodoro?: number) => void = (pomodoro?: number) => {
+    const handlePomodoro: () => void = () => {
         _notice('startSound');
         _beginPomodoroImgEffect();
 
@@ -77,14 +77,17 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             setPomodoroDone(false);
         }
 
-        // 45
-        const theBreak: number = 45;                  // 1500 == 25m
+        // 10 
+        const theBreak: number = 10;                  // 1500 == 25m
         const theTerm_30min: number = theBreak + 300;   // 300 == 5m
-        const term: number = 60;
+        const testTerm: number = 15;
 
-        let countTimer: number = 0;
+        let countTimer: number = 1;
         const theInterval: number = setInterval(() => {
-            if (pomodoroCounter === 4 && countTimer >= term) {
+            if (
+                (pomodoroCounter === 4 || pomodoro === 4) &&
+                countTimer >= testTerm
+            ) {
                 _notice('doneSound');
                 _initAllReset(theInterval);
                 _ctrlPomodoroSignal();
@@ -99,10 +102,10 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 countTimer++;
             }
 
-            else if (countTimer === term) {
+            else if (countTimer === testTerm) {
                 _notice('startSound');
-                const currPomodoro: number = pomodoro ? pomodoro + 1 : pomodoroCounter++;
-                setPomodoro((_prevPomodoro) => currPomodoro);
+                pomodoroCounter++; // ここで加算していないと currPomodoro に適切に反映されない
+                setPomodoro((_prevPomodoro) => pomodoroCounter);
                 _beginPomodoroImgEffect();
                 _ctrlPomodoroSignal();
                 countTimer = 1; // 秒数カウントリセット
@@ -112,7 +115,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 countTimer++;
             }
 
-            console.log(countTimer, pomodoroCounter, pomodoro);
+            // console.log(countTimer, pomodoroCounter, pomodoro);
         }, 1000);
 
         setIntervalValue((_prevIntervalValue) => theInterval);
