@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = () => {
@@ -21,6 +21,12 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     const [pomodoro, setPomodoro] = useState<number>(1);
     let pomodoroCounter: number = pomodoro > 1 ? pomodoro : 1;
     const [isBtnActive, setBtnActive] = useState<boolean>(false);
+
+    const [counter, setCounter] = useState<number>(1);
+    useEffect(() => {
+        let theCounter: number = counter > 1 ? counter : 1;
+        setCounter((_prevCounter) => theCounter++);
+    }, [counter]);
 
     /* ポモドーロの視覚的画像の表示に関する処理 */
     const { _beginPomodoroImgEffect, _endPomodoroImgEffect } = useHandlePomodoroImgEffect();
