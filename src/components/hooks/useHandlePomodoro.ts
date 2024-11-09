@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = () => {
@@ -66,27 +66,26 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         setPause(!isPause);
     }
 
-    /* ポモドーロ本体の機能に関する処理 */
     console.log(isBreak ? '休憩' : '開始');
-    const handlePomodoro: () => void = () => {
-        const currMinutes = new Date().getMinutes();
-        const immutableMinDeg: number = Math.floor(currMinutes * 6) + 90; // 12:00 の位置をスタート基準にするため各種 90deg を加算して表示角度を調整
-
-        _notice('startSound');
-        _beginPomodoroImgEffect();
-
-        setBtnActive(true);
-        setFocus(true);
-
-        if (isPomodoroDone) {
-            setPomodoroDone(false);
+    /* 時刻が変わったタイミングの時（分針が頂点を過ぎた場合）は再処理する */
+    const _changeClock_reHandlePomodoro: (mutableMinDeg: number, immutableMinDeg: number) => void = useCallback((mutableMinDeg: number, immutableMinDeg: number) => {
+        console.log(mutableMinDeg, immutableMinDeg);
+        if (mutableMinDeg - immutableMinDeg < 0) {
+            console.log(pomodoro);
+            setFocus(!isFocus);
+            setBreak(!isBreak);
+            setPomodoro((_prevPomodoro) => pomodoroCounter);
+            clearInterval(intervalValue);
+            _pomodoroCoreFeaturePart(immutableMinDeg);
         }
+    }, [isBreak]);
 
+    /* ポモドーロ本体のコア部分 */
+    const _pomodoroCoreFeaturePart: (immutableMinDeg: number) => void = (immutableMinDeg: number) => {
         const focusTime: number = 6; // 150 == 25m
         const breakTime: number = 6; // 30 == 5m 
         let theFocus: number = immutableMinDeg + focusTime;
         let theTerm_30min: number = theFocus + breakTime;
-        console.log(immutableMinDeg, theFocus, theTerm_30min);
 
         const theInterval: number = setInterval(() => {
             const realDOM_MinDeg: HTMLDivElement | null = document.querySelector('#long');
@@ -94,14 +93,9 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 const compStyles: CSSStyleDeclaration = window.getComputedStyle(realDOM_MinDeg);
                 const mutableMinDeg = parseInt(compStyles.getPropertyValue('rotate').replace('deg', ''));
 
-                // 時刻が変わったタイミングの時（分針が頂点を過ぎた場合）は再計算する
-                console.log(mutableMinDeg, immutableMinDeg);
-                // mutableMinDeg === 90
-                if (mutableMinDeg - immutableMinDeg < 0) {
-                    theFocus = mutableMinDeg + focusTime;
-                    theTerm_30min = theFocus + breakTime;
-                }
-                console.log(mutableMinDeg, theFocus, theTerm_30min);
+                _changeClock_reHandlePomodoro(mutableMinDeg, immutableMinDeg);
+
+                console.log(mutableMinDeg, mutableMinDeg, theFocus, theTerm_30min);
                 console.log(pomodoroCounter, pomodoro);
 
                 if (
@@ -137,6 +131,25 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         }, 60000);
 
         setIntervalValue((_prevIntervalValue) => theInterval);
+    }
+
+    /* ポモドーロ本体の機能に関する処理 */
+    const handlePomodoro: () => void = () => {
+        const currMinutes: number = new Date().getMinutes();
+        const immutableMinDeg: number = Math.floor(currMinutes * 6) + 90; // 12:00 の位置をスタート基準にするため各種 90deg を加算して表示角度を調整
+
+        _notice('startSound');
+        _beginPomodoroImgEffect();
+
+        setBtnActive(true);
+        setFocus(true);
+
+        if (isPomodoroDone) {
+            setPomodoroDone(false);
+        }
+
+        console.log(immutableMinDeg);
+        _pomodoroCoreFeaturePart(immutableMinDeg);
     }
 
     return { handlePomodoro, isBreak, isFocus, isPomodoroDone, pomodoro, isBtnActive, handlePause, isPause }
