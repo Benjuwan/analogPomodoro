@@ -13,6 +13,8 @@ type handlePomodoroType = () => {
 }
 
 export const useHandlePomodoro: handlePomodoroType = () => {
+    const pomodoroTerm: number = 4;
+
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
     const [isPomodoroDone, setPomodoroDone] = useState<boolean>(false);
@@ -84,7 +86,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         let countTimer: number = 1;
         const theInterval: number = setInterval(() => {
             if (
-                (pomodoroCounter <= 4 || pomodoro <= 4) &&
+                (pomodoroCounter <= pomodoroTerm || pomodoro <= pomodoroTerm) &&
                 countTimer <= theTerm_30min &&
                 countTimer !== theTerm_30min &&
                 countTimer !== theBreak
@@ -95,7 +97,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             }
 
             else if (
-                (pomodoroCounter === 4 || pomodoro === 4) &&
+                (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) &&
                 countTimer >= theTerm_30min
             ) {
                 _notice('doneSound');

@@ -13,6 +13,8 @@ type handlePomodoroType = () => {
 }
 
 export const useHandlePomodoro: handlePomodoroType = () => {
+    const pomodoroTerm: number = 4;
+
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
     const [isPomodoroDone, setPomodoroDone] = useState<boolean>(false);
@@ -65,9 +67,10 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     }
 
     /* ポモドーロ本体の機能に関する処理 */
+    console.log(isBreak ? '休憩' : '開始');
     const handlePomodoro: () => void = () => {
         const currMinutes = new Date().getMinutes();
-        const immutableMinDeg: number = Math.floor(currMinutes * 6) + 90;
+        const immutableMinDeg: number = Math.floor(currMinutes * 6) + 90; // 12:00 の位置をスタート基準にするため各種 90deg を加算して表示角度を調整
 
         _notice('startSound');
         _beginPomodoroImgEffect();
@@ -79,21 +82,30 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             setPomodoroDone(false);
         }
 
-        let theFocus: number = immutableMinDeg + 6; // 150 == 25m
-        let theTerm_30min: number = theFocus + 6;  // 30 == 5m
+        const focusTime: number = 6; // 150 == 25m
+        const breakTime: number = 6; // 30 == 5m 
+        let theFocus: number = immutableMinDeg + focusTime;
+        let theTerm_30min: number = theFocus + breakTime;
         console.log(immutableMinDeg, theFocus, theTerm_30min);
 
         const theInterval: number = setInterval(() => {
             const realDOM_MinDeg: HTMLDivElement | null = document.querySelector('#long');
             if (realDOM_MinDeg !== null) {
-                const compStyles: CSSStyleDeclaration = window.getComputedStyle(realDOM_MinDeg)
+                const compStyles: CSSStyleDeclaration = window.getComputedStyle(realDOM_MinDeg);
                 const mutableMinDeg = parseInt(compStyles.getPropertyValue('rotate').replace('deg', ''));
 
+                // 時刻が変わったタイミングの時（分針が頂点を過ぎた場合）は再計算する
+                console.log(mutableMinDeg, immutableMinDeg);
+                // mutableMinDeg === 90
+                if (mutableMinDeg - immutableMinDeg < 0) {
+                    theFocus = mutableMinDeg + focusTime;
+                    theTerm_30min = theFocus + breakTime;
+                }
                 console.log(mutableMinDeg, theFocus, theTerm_30min);
-                console.log(isBreak ? '休憩' : '開始', pomodoroCounter, pomodoro);
+                console.log(pomodoroCounter, pomodoro);
 
                 if (
-                    (pomodoroCounter === 4 || pomodoro === 4) &&
+                    (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) &&
                     mutableMinDeg >= theTerm_30min
                 ) {
                     _notice('doneSound');
@@ -110,8 +122,8 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 }
 
                 else if (mutableMinDeg === theTerm_30min) {
-                    theFocus = mutableMinDeg + 6;
-                    theTerm_30min = theFocus + 6;
+                    theFocus = mutableMinDeg + focusTime;
+                    theTerm_30min = theFocus + breakTime;
                     console.log(theFocus, theTerm_30min);
                     _notice('startSound');
                     pomodoroCounter++; // ここで加算していないと currPomodoro に適切に反映されない
