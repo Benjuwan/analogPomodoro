@@ -22,7 +22,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     let pomodoroCounter: number = pomodoro > 1 ? pomodoro : 1;
     const [isBtnActive, setBtnActive] = useState<boolean>(false);
     const [isPause, setPause] = useState<boolean>(true);
-    const [intervalValue, setIntervalValue] = useState<number>(0);
+    const [intervalValue, setIntervalValue] = useState<number | null>(null);
 
     /* ポモドーロの視覚的画像の表示に関する処理 */
     const { _beginPomodoroImgEffect, _endPomodoroImgEffect } = useHandlePomodoroImgEffect();
@@ -38,6 +38,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         clearInterval(theInterval);
         pomodoroCounter = 1;
         setPomodoro((_prevPomodoro) => 1);
+        setIntervalValue((_prevIntervalValue) => null);
         setBtnActive(false);
     }
 
@@ -57,7 +58,9 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         if (isPause) {
             setPomodoro((_prevPomodoro) => pomodoro);
             alert('ポモドーロが中断されました');
-            clearInterval(intervalValue);
+            if (intervalValue !== null) {
+                clearInterval(intervalValue);
+            }
         } else {
             handlePomodoro();
         }
@@ -68,32 +71,35 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
     /* ポモドーロ本体の機能に関する処理 */
     const _handlePomodoroFeatureCorePart: () => void = () => {
-        const theBreak: number = 1500;                  // 1500 == 25m
-        const theTerm_30min: number = theBreak + 300;   // 300 == 5m
-        const testBreak: number = 10;
-        const testTerm: number = 15;
+        const theBreak: number = 120;                  // 1500 == 25m
+        const theTerm_30min: number = theBreak + 60;   // 300 == 5m
 
-        const startTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
+        const pomodoroStartTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
 
         let countTimer: number = 1;
         const theInterval: number = setInterval(() => {
-            const currTime: number = Math.floor((Date.now() - startTime) / 1000);
-            console.log(countTimer, currTime);
+            const elapsedTime: number = Math.floor((Date.now() - pomodoroStartTime) / 1000);
+
+            if (elapsedTime % 60 === 0) {
+                // const currSec = new Date().getSeconds();
+                // console.warn(currSec);
+                console.log(countTimer, elapsedTime);
+            }
 
             if (
                 (pomodoroCounter <= pomodoroTerm || pomodoro <= pomodoroTerm) &&
-                countTimer <= theTerm_30min &&
-                countTimer !== theTerm_30min &&
-                countTimer !== theBreak
+                elapsedTime <= theTerm_30min &&
+                elapsedTime !== theTerm_30min &&
+                elapsedTime !== theBreak
             ) {
                 countTimer++;
-                console.log(countTimer, pomodoroCounter, pomodoro);
+                // console.log(elapsedTime, countTimer, pomodoroCounter, pomodoro);
                 return; // 早期終了で処理負荷軽減
             }
 
             else if (
                 (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) &&
-                countTimer >= theTerm_30min
+                elapsedTime >= theTerm_30min
             ) {
                 _notice('doneSound');
                 _initAllReset(theInterval);
@@ -102,24 +108,30 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 setPomodoroDone(true);
             }
 
-            else if (countTimer === theBreak) {
+            else if (elapsedTime === theBreak) {
                 _notice('doneSound');
                 setFocus(false);
                 setBreak(true);
                 countTimer++;
             }
 
-            else if (countTimer === theTerm_30min) {
+            else if (elapsedTime === theTerm_30min) {
                 _notice('startSound');
-                pomodoroCounter++; // ここで加算していないと currPomodoro に適切に反映されない
+                pomodoroCounter++;
                 setPomodoro((_prevPomodoro) => pomodoroCounter);
                 _beginPomodoroImgEffect();
                 _ctrlPomodoroSignal();
                 countTimer = 1; // 秒数カウントリセット
+                if (intervalValue !== null) {
+                    clearInterval(intervalValue);
+                } else {
+                    clearInterval(theInterval);
+                }
+                _handlePomodoroFeatureCorePart();
             }
 
             else {
-                const err: string = `countTimer:${countTimer}, pomodoroCounter:${pomodoroCounter}, pomodoro:${pomodoro}\nelse：どの条件にも該当しない処理考慮漏れです`;
+                const err: string = `elapsedTime:${elapsedTime}, pomodoroCounter:${pomodoroCounter}, pomodoro:${pomodoro}\nelse：どの条件にも該当しない処理考慮漏れです`;
                 throw new Error(err);
             }
         }, 1000);
