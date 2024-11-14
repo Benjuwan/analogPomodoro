@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = () => {
@@ -50,6 +50,12 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         }
     }
 
+    /* 分針の角度を取得 */
+    const _generateTargetDeg: () => number = useCallback(() => {
+        const theMinutes: number = new Date().getMinutes();
+        return Math.floor(theMinutes * 6); // 360/60（6度ずつ進む）
+    }, [pomodoro]);
+
     /* ポモドーロの一時停止及び当該ポモドーロの再スタートに関する処理 */
     const handlePause: () => void = () => {
         isFocus && setFocus(false);
@@ -76,28 +82,30 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
         const pomodoroStartTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
 
-        let countTimer: number = 1;
+        const startMinutesDeg: number = _generateTargetDeg();
+
         const theInterval: number = setInterval(() => {
             const elapsedTime: number = Math.floor((Date.now() - pomodoroStartTime) / 1000);
 
             if (elapsedTime % 60 === 0) {
-                // const currSec = new Date().getSeconds();
-                // console.warn(currSec);
-                console.log(countTimer, elapsedTime);
+                const targetMinutesDeg: number = _generateTargetDeg();
+                const BreakDeg = startMinutesDeg + (180 - 30);
+                const reStartDeg = startMinutesDeg + 180;
+                console.warn(startMinutesDeg, BreakDeg, reStartDeg);
+                console.warn(targetMinutesDeg, elapsedTime);
             }
+
+            // if (
+            //     (pomodoroCounter <= pomodoroTerm || pomodoro <= pomodoroTerm) &&
+            //     elapsedTime <= theTerm_30min &&
+            //     elapsedTime !== theTerm_30min &&
+            //     elapsedTime !== theBreak
+            // ) {
+            //     console.log(elapsedTime, pomodoroCounter, pomodoro);
+            //     return; // 早期終了で処理負荷軽減
+            // }
 
             if (
-                (pomodoroCounter <= pomodoroTerm || pomodoro <= pomodoroTerm) &&
-                elapsedTime <= theTerm_30min &&
-                elapsedTime !== theTerm_30min &&
-                elapsedTime !== theBreak
-            ) {
-                countTimer++;
-                // console.log(elapsedTime, countTimer, pomodoroCounter, pomodoro);
-                return; // 早期終了で処理負荷軽減
-            }
-
-            else if (
                 (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) &&
                 elapsedTime >= theTerm_30min
             ) {
@@ -112,7 +120,6 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 _notice('doneSound');
                 setFocus(false);
                 setBreak(true);
-                countTimer++;
             }
 
             else if (elapsedTime === theTerm_30min) {
@@ -121,7 +128,6 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 setPomodoro((_prevPomodoro) => pomodoroCounter);
                 _beginPomodoroImgEffect();
                 _ctrlPomodoroSignal();
-                countTimer = 1; // 秒数カウントリセット
                 if (intervalValue !== null) {
                     clearInterval(intervalValue);
                 } else {
@@ -131,6 +137,8 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             }
 
             else {
+                console.log(elapsedTime, pomodoroCounter, pomodoro);
+                return;
                 const err: string = `elapsedTime:${elapsedTime}, pomodoroCounter:${pomodoroCounter}, pomodoro:${pomodoro}\nelse：どの条件にも該当しない処理考慮漏れです`;
                 throw new Error(err);
             }
