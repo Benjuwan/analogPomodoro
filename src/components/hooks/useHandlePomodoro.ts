@@ -95,16 +95,6 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 console.warn(targetMinutesDeg, elapsedTime);
             }
 
-            // if (
-            //     (pomodoroCounter <= pomodoroTerm || pomodoro <= pomodoroTerm) &&
-            //     elapsedTime <= theTerm_30min &&
-            //     elapsedTime !== theTerm_30min &&
-            //     elapsedTime !== theBreak
-            // ) {
-            //     console.log(elapsedTime, pomodoroCounter, pomodoro);
-            //     return; // 早期終了で処理負荷軽減
-            // }
-
             if (
                 (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) &&
                 elapsedTime >= theTerm_30min
@@ -139,10 +129,8 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             else {
                 console.log(elapsedTime, pomodoroCounter, pomodoro);
                 return;
-                const err: string = `elapsedTime:${elapsedTime}, pomodoroCounter:${pomodoroCounter}, pomodoro:${pomodoro}\nelse：どの条件にも該当しない処理考慮漏れです`;
-                throw new Error(err);
             }
-        }, 1000);
+        }, 60000);
 
         setIntervalValue((_prevIntervalValue) => theInterval);
     }
