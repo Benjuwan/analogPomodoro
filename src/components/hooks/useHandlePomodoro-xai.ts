@@ -1,7 +1,9 @@
-import { useState } from "react";
+/* useHandlePomodoro-xai ：分針の角度を用いたポモドーロタイマー（検証用） */
+
+import { useCallback, useState } from "react";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
-type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement | null>) => {
+type handlePomodoroType = () => {
     handlePomodoro: () => void;
     isBreak: boolean;
     isFocus: boolean;
@@ -12,7 +14,7 @@ type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement
     isPause: boolean;
 }
 
-export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
+export const useHandlePomodoro: handlePomodoroType = () => {
     const pomodoroTerm: number = 4;
 
     const [isBreak, setBreak] = useState<boolean>(false);
@@ -38,9 +40,6 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
         clearInterval(theInterval);
         pomodoroCounter = 1;
         setPomodoro((_prevPomodoro) => 1);
-        if (doneSoundRef.current?.classList.contains('done')) {
-            doneSoundRef.current?.classList.remove('done');
-        }
         setIntervalValue((_prevIntervalValue) => null);
         setBtnActive(false);
     }
@@ -49,31 +48,13 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
     type audioElmType = 'doneSound' | 'startSound';
     const _notice: (audioElmStr: audioElmType) => void = (audioElmStr: audioElmType) => {
         const audioElm: HTMLAudioElement | null = document.querySelector(`#${audioElmStr}`);
-
-        if (audioElmStr === 'doneSound') {
-            if (doneSoundRef.current?.classList.contains('done')) {
-                return;
-            }
-
-            doneSoundRef.current?.classList.add('done');
-            audioElm?.play();
-        } else {
-            if (doneSoundRef.current?.classList.contains('done')) {
-                doneSoundRef.current?.classList.remove('done'); // 初期化
-            }
-
-            audioElm?.play();
-        }
+        audioElm?.play();
     }
 
     /* ポモドーロの一時停止及び当該ポモドーロの再スタートに関する処理 */
     const handlePause: () => void = () => {
         isFocus && setFocus(false);
         isBreak && setBreak(false);
-
-        if (doneSoundRef.current?.classList.contains('done')) {
-            doneSoundRef.current?.classList.remove('done'); // 初期化
-        }
 
         if (isPause) {
             setPomodoro((_prevPomodoro) => pomodoro);
@@ -89,27 +70,34 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
         setPause(!isPause);
     }
 
+    /* 分針の角度を取得 */
+    const _generateTargetDeg: () => number = useCallback(() => {
+        const theMinutes: number = new Date().getMinutes();
+        return Math.floor(theMinutes * 6); // 360/60（6度ずつ進む）
+    }, [pomodoro]);
+
     /* ポモドーロ本体の機能に関する処理 */
     const _handlePomodoroFeatureCorePart: () => void = () => {
-        const theBreak: number = 1500;                  // 1500 == 25m
-        const theTerm_30min: number = theBreak + 300;   // 300 == 5m
-
-        const pomodoroStartTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
+        const startMinutesDeg: number = _generateTargetDeg();
 
         const theInterval: number = setInterval(() => {
-            const elapsedTime: number = Math.floor((Date.now() - pomodoroStartTime) / 1000);
+            const targetMinutesDeg: number = _generateTargetDeg();
+            // 180deg == 30m（6deg * 30）, 30deg == 5m（6deg * 5）
+            const BreakDeg = startMinutesDeg + (180 - 30);
+            const reStartDeg = startMinutesDeg + 180;
+            console.warn(startMinutesDeg, BreakDeg, reStartDeg);
 
             /* ポモドーロ終了のシグナル */
-            const isPomodoroOver: boolean = (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) && elapsedTime >= theTerm_30min;
+            const isPomodoroOver: boolean = (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) && targetMinutesDeg >= reStartDeg;
 
             /* 休憩開始のシグナル */
-            const isBreakTerm: boolean = elapsedTime >= theBreak && elapsedTime < theTerm_30min;
+            const isBreakTerm: boolean = targetMinutesDeg === BreakDeg;
 
             /* タスク開始のシグナル */
-            const isReStartTerm: boolean = elapsedTime >= theTerm_30min;
+            const isReStartTerm: boolean = targetMinutesDeg === reStartDeg;
 
             if (!isPomodoroOver && !isBreakTerm && !isReStartTerm) {
-                console.log(elapsedTime, pomodoroCounter, pomodoro);
+                console.log(targetMinutesDeg, pomodoroCounter, pomodoro);
                 return; // 早期終了
             }
 
@@ -139,7 +127,7 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
                 }
                 _handlePomodoroFeatureCorePart();
             }
-        }, 1000);
+        }, 60000);
 
         setIntervalValue((_prevIntervalValue) => theInterval);
     }

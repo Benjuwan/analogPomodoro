@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import { useRef } from "react";
 import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
 
 import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
 
 export const Pomodoro = () => {
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro();
+    const doneSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
+
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
 
     return (
         <ThePomodoro>
@@ -22,7 +25,7 @@ export const Pomodoro = () => {
                 <button type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
             }
             <audio id="startSound" src={startSound} hidden>&nbsp;</audio>
-            <audio id="doneSound" src={doneSound} hidden>&nbsp;</audio>
+            <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
         </ThePomodoro>
     );
 }
