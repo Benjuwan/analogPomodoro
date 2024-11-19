@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
+import { SelectTerm } from "./utils/SelectTerm";
 import { Pomodoro } from "./utils/Pomodoro";
 import { ClockHands } from "./utils/ClockHands";
 import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
 
 import pomodoroImg from "../assets/pomodoro.svg";
+import { ThePie } from "./ThePie";
 
 export const Clock = () => {
   const theClockRef = useRef<HTMLDivElement | null>(null);
@@ -22,13 +24,15 @@ export const Clock = () => {
 
   return (
     <>
+      <SelectTerm />
       <Pomodoro />
       <TheClock ref={theClockRef} className="clock">
         <div id="long">&nbsp;</div>
         <div id="short">&nbsp;</div>
         <div id="sec">&nbsp;</div>
         <ClockHands />
-        <figure className="pomodoroImg"><img src={pomodoroImg} alt="ポモドーロ期間を表す半月形式の視覚的画像" /></figure>
+        {/* <figure className="pomodoroImg"><img src={pomodoroImg} alt="ポモドーロ期間を表す半月形式の視覚的画像" /></figure> */}
+        <div className="pomodoroImg"><ThePie /></div>
       </TheClock>
     </>
   );
@@ -50,10 +54,15 @@ position: relative;
     top: 50%;
     left: 50%;
     transform-origin: left top;
-    transform: translate(0%, -50%);
+    /* transform: translate(0%, -50%); */
+    transform: translate(-50%, -50%);
     mix-blend-mode: color;
     transition: rotate .5s;
     visibility: hidden;
+
+    & svg {
+      transform: scale(4);
+    }
   }
 
   &::before {

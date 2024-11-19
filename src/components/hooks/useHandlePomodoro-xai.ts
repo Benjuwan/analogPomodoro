@@ -1,6 +1,8 @@
 /* useHandlePomodoro-xai ：分針の角度を用いたポモドーロタイマー（検証用） */
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
+import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = () => {
@@ -14,8 +16,11 @@ type handlePomodoroType = () => {
     isPause: boolean;
 }
 
-export const useHandlePomodoro: handlePomodoroType = () => {
+export const useHandlePomodoroXai: handlePomodoroType = () => {
     const pomodoroTerm: number = 4;
+
+    const { setPomodoroStart } = useContext(PomodoroStartContext);
+    const { pomodoroTime } = useContext(PomodoroTimeContext);
 
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
@@ -37,11 +42,13 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
     /* 初期化（リセット）に関する処理 */
     const _initAllReset: (theInterval: number) => void = (theInterval: number) => {
+        setPomodoroStart(false);
         clearInterval(theInterval);
         pomodoroCounter = 1;
         setPomodoro((_prevPomodoro) => 1);
         setIntervalValue((_prevIntervalValue) => null);
         setBtnActive(false);
+        setPomodoroDone(true);
     }
 
     /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
@@ -71,42 +78,57 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     }
 
     /* 分針の角度を取得 */
-    const _generateTargetDeg: () => number = useCallback(() => {
-        const theMinutes: number = new Date().getMinutes();
-        return Math.floor(theMinutes * 6); // 360/60（6度ずつ進む）
+    const _generateMinDeg: () => number = useCallback(() => {
+        const currMinutes = new Date().getMinutes();
+        return Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
+    }, [pomodoro]);
+
+    /* 秒針の角度を取得 */
+    const _generateSecDeg: () => number = useCallback(() => {
+        const currSeconds = new Date().getSeconds();
+        return Math.floor(currSeconds * 6); // 360/60（6度ずつ進む）
     }, [pomodoro]);
 
     /* ポモドーロ本体の機能に関する処理 */
     const _handlePomodoroFeatureCorePart: () => void = () => {
-        const startMinutesDeg: number = _generateTargetDeg();
+        const startMinutesDeg: number = _generateMinDeg();
 
         const theInterval: number = setInterval(() => {
-            const targetMinutesDeg: number = _generateTargetDeg();
+            console.log(pomodoroTime);
+
+            const secDeg: number = _generateSecDeg();
+            const minDeg: number = _generateMinDeg();
             // 180deg == 30m（6deg * 30）, 30deg == 5m（6deg * 5）
-            const BreakDeg = startMinutesDeg + (180 - 30);
-            const reStartDeg = startMinutesDeg + 180;
-            console.warn(startMinutesDeg, BreakDeg, reStartDeg);
+            const BreakDeg = minDeg === 348 ? 360 - (startMinutesDeg + 6) : startMinutesDeg + pomodoroTime.breakStartTime; // (180 - 30)
+            const reStartDeg = minDeg === 354 ? 360 - (startMinutesDeg + pomodoroTime.focus_reStartTime) : startMinutesDeg + pomodoroTime.focus_reStartTime; // 180
+            console.warn(startMinutesDeg, minDeg, BreakDeg, reStartDeg);
+
+            // 0分 から 1分 に切り替わるタイミングで実行したいので 6（deg）を指定
+            if (secDeg !== 6) {
+                console.log(secDeg);
+                return;
+            }
+
+            // const minDeg: number = _generateMinDeg();
+            // // 180deg == 30m（6deg * 30）, 30deg == 5m（6deg * 5）
+            // const BreakDeg = (startMinutesDeg + 6) >= 360 ? 360 - (startMinutesDeg + 6) : startMinutesDeg + 6; // (180 - 30)
+            // const reStartDeg = (startMinutesDeg + 12) >= 360 ? 360 - (startMinutesDeg + 12) : startMinutesDeg + 12; // 180
+            // console.warn(startMinutesDeg, minDeg, BreakDeg, reStartDeg);
 
             /* ポモドーロ終了のシグナル */
-            const isPomodoroOver: boolean = (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) && targetMinutesDeg >= reStartDeg;
+            const isPomodoroOver: boolean = (pomodoroCounter === pomodoroTerm || pomodoro === pomodoroTerm) && minDeg >= reStartDeg;
 
             /* 休憩開始のシグナル */
-            const isBreakTerm: boolean = targetMinutesDeg === BreakDeg;
+            const isBreakTerm: boolean = minDeg === BreakDeg;
 
             /* タスク開始のシグナル */
-            const isReStartTerm: boolean = targetMinutesDeg === reStartDeg;
-
-            if (!isPomodoroOver && !isBreakTerm && !isReStartTerm) {
-                console.log(targetMinutesDeg, pomodoroCounter, pomodoro);
-                return; // 早期終了
-            }
+            const isReStartTerm: boolean = minDeg === reStartDeg;
 
             if (isPomodoroOver) {
                 _initAllReset(theInterval);
                 _notice('doneSound');
                 _ctrlPomodoroSignal();
                 _endPomodoroImgEffect();
-                setPomodoroDone(true);
             }
 
             else if (isBreakTerm) {
@@ -127,7 +149,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
                 }
                 _handlePomodoroFeatureCorePart();
             }
-        }, 60000);
+        }, 1000);
 
         setIntervalValue((_prevIntervalValue) => theInterval);
     }
@@ -138,6 +160,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
         setBtnActive(true);
         setFocus(true);
+        setPomodoroStart(true);
 
         if (isPomodoroDone) {
             setPomodoroDone(false);

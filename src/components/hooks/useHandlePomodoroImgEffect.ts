@@ -5,7 +5,8 @@ export const useHandlePomodoroImgEffect = () => {
             const currMinutes: number = new Date().getMinutes();
             const targetMinutesDeg: number = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）
             pomodoroImg.style.setProperty('visibility', 'visible');
-            pomodoroImg.style.setProperty('rotate', `${targetMinutesDeg}deg`);
+            // pomodoroImg.style.setProperty('rotate', `${targetMinutesDeg}deg`);
+            pomodoroImg.style.setProperty('rotate', `${targetMinutesDeg + 90}deg`);
         }
 
         const clockLong: HTMLElement | null = document.querySelector('#long');
