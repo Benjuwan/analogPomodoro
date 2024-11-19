@@ -1,13 +1,13 @@
 export const useCurrTimeCalc = () => {
     const currTimeCalc: (theClock: React.MutableRefObject<HTMLDivElement | null>) => number = (theClock: React.MutableRefObject<HTMLDivElement | null>) => {
-        const hours = theClock.current?.querySelector('#short');
-        const minutes = theClock.current?.querySelector('#long');
-        const seconds = theClock.current?.querySelector('#sec');
+        const hours: Element | null | undefined = theClock.current?.querySelector('#short');
+        const minutes: Element | null | undefined = theClock.current?.querySelector('#long');
+        const seconds: Element | null | undefined = theClock.current?.querySelector('#sec');
 
         const theInterval: number = setInterval(() => {
-            const currHours = new Date().getHours();
-            const currMinutes = new Date().getMinutes();
-            const currSeconds = new Date().getSeconds();
+            const currHours: number = new Date().getHours();
+            const currMinutes: number = new Date().getMinutes();
+            const currSeconds: number = new Date().getSeconds();
 
             const targetHoursDeg: number = Math.floor((currHours * 30) + (currMinutes * 0.5)); // 360/12（30度ずつ進む）
             const targetMinutesDeg: number = Math.floor(currMinutes * 6); // 360/60（6度ずつ進む）

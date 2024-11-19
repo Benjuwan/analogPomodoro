@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useRef } from "react";
-import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
+// import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
+import { useHandlePomodoroXai } from "../hooks/useHandlePomodoro-xai";
 
 import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
@@ -8,7 +9,8 @@ import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixa
 export const Pomodoro = () => {
     const doneSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
 
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
+    // const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoroXai();
 
     return (
         <ThePomodoro>
