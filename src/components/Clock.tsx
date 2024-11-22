@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { SelectTerm } from "./utils/SelectTerm";
 import { Pomodoro } from "./utils/Pomodoro";
 import { ClockHands } from "./utils/ClockHands";
-import { ThePie } from "./ThePie";
+import { ThePie } from "./utils/ThePie";
 import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
 
 export const Clock = () => {
@@ -77,36 +77,35 @@ z-index: 0;
   
   & div {
     border-radius: 16px;
-    transform-origin: center right;
+    transform-origin: center left;
     position: absolute;
     top: 50%;
-    left: 0%;
+    left: 50%;
     z-index: 1;
     
     &#long {
       width: calc(100vw/3.4);
       height: 2px;
       background-color: #333;
-      translate: 1.3em 0%;
+      transform: translate(-100%, 0%);
     }
 
     &#short {
       width: calc(100vw/4);
       height: 3px;
       background-color: #333;
-      translate: 2.25em 0%;
+      transform: translate(-100%, 0%);
     }
 
     &#sec {
       width: calc(100vw/3.2);
       height: 1px;
       background-color: #333;
-      translate: .5em 0%;
+      transform: translate(-100%, 0%);
     }
   }
 
   & .recharts-wrapper {
-    left: 50%;
     transform: translate(-50%, 0%);
   }
 
@@ -119,18 +118,15 @@ filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
     &#long {
       width: 180px;
       height: 3px;
-      translate: 11% 0%;
     }
 
     &#short {
       width: 100px;
       height: 5px;
-      translate: 101% 0%;
     }
 
     &#sec {
       width: 190px;
-      translate: 5% 0%;
     }
   }
 }
