@@ -8,9 +8,10 @@ type Default = {
 export const PomodoroTimeContext = createContext({} as Default);
 
 export const PomodoroTimeContextFragment = ({ children }: { children: ReactNode }) => {
+    // 180deg == 30m（6deg * 30）, 30deg == 5m（6deg * 5）
     const initPomodoroTime: setPomodoroTimeType = {
-        focus_reStartTime: 6, // 180
-        breakStartTime: 12, // 30
+        focus_reStartTime: 150,
+        breakStartTime: 30
     }
     const [pomodoroTime, setPomodoroTime] = useState<setPomodoroTimeType>(initPomodoroTime);
 
