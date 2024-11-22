@@ -3,7 +3,10 @@ import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
-type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement | null>) => {
+type handlePomodoroType = (
+    startSoundRef: React.MutableRefObject<HTMLAudioElement | null>,
+    doneSoundRef: React.MutableRefObject<HTMLAudioElement | null>
+) => {
     handlePomodoro: () => void;
     isBreak: boolean;
     isFocus: boolean;
@@ -14,7 +17,7 @@ type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement
     isPause: boolean;
 }
 
-export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
+export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRef) => {
     const pomodoroTerm: number = 4;
 
     const { setPomodoroStart } = useContext(PomodoroStartContext);
@@ -52,23 +55,21 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
     }
 
     /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
-    type audioElmType = 'doneSound' | 'startSound';
+    type audioElmType = 'startSound' | 'doneSound';
     const _notice: (audioElmStr: audioElmType) => void = (audioElmStr: audioElmType) => {
-        const audioElm: HTMLAudioElement | null = document.querySelector(`#${audioElmStr}`);
+        if (audioElmStr === 'startSound') {
+            if (doneSoundRef.current?.classList.contains('done')) {
+                doneSoundRef.current?.classList.remove('done'); // 初期化
+            }
 
-        if (audioElmStr === 'doneSound') {
+            startSoundRef.current?.play();
+        } else {
             if (doneSoundRef.current?.classList.contains('done')) {
                 return;
             }
 
             doneSoundRef.current?.classList.add('done');
-            audioElm?.play();
-        } else {
-            if (doneSoundRef.current?.classList.contains('done')) {
-                doneSoundRef.current?.classList.remove('done'); // 初期化
-            }
-
-            audioElm?.play();
+            doneSoundRef.current?.play();
         }
     }
 
@@ -116,7 +117,7 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
             const isReStartTerm: boolean = elapsedTime >= theTerm_30min;
 
             if (!isPomodoroOver && !isBreakTerm && !isReStartTerm) {
-                console.log(elapsedTime, pomodoroCounter, pomodoro);
+                // console.log(elapsedTime, pomodoroCounter, pomodoro);
                 return; // 早期終了
             }
 

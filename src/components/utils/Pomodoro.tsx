@@ -7,11 +7,12 @@ import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield]
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
 
 export const Pomodoro = () => {
+    const startSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
     const doneSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
 
     const { pomodoroTime } = useContext(PomodoroTimeContext);
 
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(startSoundRef, doneSoundRef);
 
     return (
         <ThePomodoro>
@@ -27,7 +28,7 @@ export const Pomodoro = () => {
                 <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
                 <button type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
             }
-            <audio id="startSound" src={startSound} hidden>&nbsp;</audio>
+            <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
         </ThePomodoro>
     );
