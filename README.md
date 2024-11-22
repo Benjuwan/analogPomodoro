@@ -2,7 +2,7 @@
 - [analog-pomodoro](https://k2webservice.xsrv.jp/r0105/analog-pomodoro/)
 
 ## 概要
-アナログ時計なポモドーロタイマー。30分間を表す半月状の視覚画像（25分+5分）で直感的に把握できます。タスク開始と休憩開始時に通知（サウンド）が鳴ります。
+デジタルでアナログなポモドーロタイマー。ポモドーロタームを表す視覚画像（デフォルト：25分+5分）で直感的に把握できます。タスク開始と休憩開始時に通知（サウンド）が鳴ります。
 
 ### ポモドーロとは
 - その日に達成したい1つのタスクを細かく分割する
@@ -24,6 +24,23 @@ export default defineConfig({
 +  base: 'r0105/analog-pomodoro'
 })
 ```
+
+## 技術構成
+- @eslint/js@9.14.0
+- @types/react-dom@18.3.1
+- @types/react@18.3.12
+- @vitejs/plugin-react@4.3.3
+- eslint-plugin-react-hooks@5.0.0
+- eslint-plugin-react-refresh@0.4.14
+- eslint@9.14.0
+- globals@15.11.0
+- react-dom@18.3.1
+- react@18.3.1
+- recharts@2.13.3
+- styled-components@6.1.13
+- typescript-eslint@8.12.2
+- typescript@5.6.3
+- vite@5.4.10
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)

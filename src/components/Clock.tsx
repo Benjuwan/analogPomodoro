@@ -3,10 +3,8 @@ import { useEffect, useRef } from "react";
 import { SelectTerm } from "./utils/SelectTerm";
 import { Pomodoro } from "./utils/Pomodoro";
 import { ClockHands } from "./utils/ClockHands";
-import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
-
-import pomodoroImg from "../assets/pomodoro.svg";
 import { ThePie } from "./ThePie";
+import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
 
 export const Clock = () => {
   const theClockRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +29,6 @@ export const Clock = () => {
         <div id="short">&nbsp;</div>
         <div id="sec">&nbsp;</div>
         <ClockHands />
-        {/* <figure className="pomodoroImg"><img src={pomodoroImg} alt="ポモドーロ期間を表す半月形式の視覚的画像" /></figure> */}
         <div className="pomodoroImg"><ThePie /></div>
       </TheClock>
     </>
@@ -39,6 +36,7 @@ export const Clock = () => {
 }
 
 const TheClock = styled.div`
+position: relative;
 display: none;
 overflow: hidden;
 width: calc(100vw/1.5);
@@ -47,18 +45,17 @@ aspect-ratio: 1/1;
 border-radius: 50%;
 background-color: #dadada;
 margin: 0 auto 2.5em;
-position: relative;
+z-index: 0;
 
   & .pomodoroImg {
     position: absolute;
     top: 50%;
     left: 50%;
     transform-origin: left top;
-    /* transform: translate(0%, -50%); */
     transform: translate(-50%, -50%);
-    mix-blend-mode: color;
     transition: rotate .5s;
     visibility: hidden;
+    z-index: -1;
 
     & svg {
       transform: scale(4);
@@ -87,17 +84,17 @@ position: relative;
     z-index: 1;
     
     &#long {
-      width: calc(100vw/3.5);
+      width: calc(100vw/3.4);
       height: 2px;
       background-color: #333;
-      translate: 1.5em 0%;
+      translate: 1.3em 0%;
     }
 
     &#short {
       width: calc(100vw/4);
       height: 3px;
       background-color: #333;
-      translate: 3em 0%;
+      translate: 2.25em 0%;
     }
 
     &#sec {
@@ -108,7 +105,12 @@ position: relative;
     }
   }
 
-@media screen and (min-width: 700px) {
+  & .recharts-wrapper {
+    left: 50%;
+    transform: translate(-50%, 0%);
+  }
+
+@media screen and (min-width: 560px) {
 width: 400px;
 height: 400px;
 filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
@@ -131,10 +133,5 @@ filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
       translate: 5% 0%;
     }
   }
-}
-
-@keyframes sec {
-  0%{transform: rotate(90deg) translate(0%, -50%) }
-  100%{transform: rotate(450deg) translate(0%, -50%) }
 }
 `;

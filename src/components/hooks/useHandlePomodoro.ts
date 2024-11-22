@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
+import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
 type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement | null>) => {
@@ -14,6 +16,9 @@ type handlePomodoroType = (doneSoundRef: React.MutableRefObject<HTMLAudioElement
 
 export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
     const pomodoroTerm: number = 4;
+
+    const { setPomodoroStart } = useContext(PomodoroStartContext);
+    const { pomodoroTime } = useContext(PomodoroTimeContext);
 
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
@@ -35,6 +40,7 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
 
     /* 初期化（リセット）に関する処理 */
     const _initAllReset: (theInterval: number) => void = (theInterval: number) => {
+        setPomodoroStart(false);
         clearInterval(theInterval);
         pomodoroCounter = 1;
         setPomodoro((_prevPomodoro) => 1);
@@ -91,8 +97,9 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
 
     /* ポモドーロ本体の機能に関する処理 */
     const _handlePomodoroFeatureCorePart: () => void = () => {
-        const theBreak: number = 1500;                  // 1500 == 25m
-        const theTerm_30min: number = theBreak + 300;   // 300 == 5m
+        const theBreak: number = pomodoroTime.focus_reStartTime * 10; // 1500 == 25m
+        const theTerm_30min: number = theBreak + (pomodoroTime.breakStartTime * 10); // 300 == 5m
+        console.log(theBreak, theTerm_30min);
 
         const pomodoroStartTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
 
@@ -145,11 +152,18 @@ export const useHandlePomodoro: handlePomodoroType = (doneSoundRef) => {
     }
 
     const handlePomodoro: () => void = () => {
+        const pomodoroTermTime: number = pomodoroTime.focus_reStartTime + pomodoroTime.breakStartTime;
+        if (pomodoroTermTime > 180) {
+            alert('ポモドーロのタームは30分以内で指定してください');
+            return;
+        }
+
         _notice('startSound');
         _beginPomodoroImgEffect();
 
         setBtnActive(true);
         setFocus(true);
+        setPomodoroStart(true);
 
         if (isPomodoroDone) {
             setPomodoroDone(false);

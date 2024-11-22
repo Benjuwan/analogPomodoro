@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useRef } from "react";
-// import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
-import { useHandlePomodoroXai } from "../hooks/useHandlePomodoro-xai";
+import { useContext, useRef } from "react";
+import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
+import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
 
 import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
@@ -9,8 +9,9 @@ import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixa
 export const Pomodoro = () => {
     const doneSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
 
-    // const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoroXai();
+    const { pomodoroTime } = useContext(PomodoroTimeContext);
+
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(doneSoundRef);
 
     return (
         <ThePomodoro>
@@ -18,8 +19,8 @@ export const Pomodoro = () => {
                 <p>お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
                     <h2>Pomodoro<br />（{pomodoro}/4）</h2>
-                    {isFocus && <p className="pomodoroFocus">ポモドーロ開始です。25分間タスクに集中してください。</p>}
-                    {isBreak && <p className="pomodoroBreak">インターバルです。5分間休憩してください。</p>}
+                    {isFocus && <p className="pomodoroFocus">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
+                    {isBreak && <p className="pomodoroBreak">インターバルです。{pomodoroTime.breakStartTime / 6}分間休憩してください。</p>}
                 </>
             }
             {isBtnActive ?

@@ -1,17 +1,8 @@
 import styled from "styled-components";
 import { ChangeEvent, useContext } from "react";
-import { OptionChildrenType, setPomodoroTimeType } from "./types/ThePomodoroTypes";
+import { setPomodoroTimeType } from "./types/ThePomodoroTypes";
 import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
-
-const OptionChildren = ({ props }: { props: OptionChildrenType }) => {
-    const { term } = props;
-
-    return (
-        // <option value={term * 60}>{term}</option>
-        <option value={term * 6}>{term}</option>
-    );
-}
 
 export const SelectTerm = () => {
     const minTerms: number[] = [5, 10, 15, 20, 25];
@@ -35,9 +26,7 @@ export const SelectTerm = () => {
                         <p>タスク時間</p>
                         <select name="focus" id="focus" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'focus')}>
                             {[...minTerms].reverse().map(term => (
-                                <OptionChildren key={term} props={{
-                                    term: term
-                                }} />
+                                <option key={term} value={term * 6}>{term}</option>
                             ))}
                         </select>
                     </div>
@@ -45,9 +34,7 @@ export const SelectTerm = () => {
                         <p>休憩時間</p>
                         <select name="break" id="break" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'break')}>
                             {minTerms.map(term => (
-                                <OptionChildren key={term} props={{
-                                    term: term
-                                }} />
+                                <option key={term} value={term * 6}>{term}</option>
                             ))}
                         </select>
                     </div>
