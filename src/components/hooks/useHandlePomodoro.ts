@@ -54,6 +54,7 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
         setBtnActive(false);
     }
 
+    /* ------------ /// TOFIX：iOS で休憩開始サウンドが再生されない /// ------------ */
     /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
     type audioElmType = 'startSound' | 'doneSound';
     const _notice: (audioElmStr: audioElmType) => void = (audioElmStr: audioElmType) => {
@@ -63,7 +64,9 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
             }
 
             startSoundRef.current?.play();
-        } else {
+        }
+
+        if (audioElmStr === 'doneSound') {
             if (doneSoundRef.current?.classList.contains('done')) {
                 return;
             }
@@ -100,7 +103,6 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
     const _handlePomodoroFeatureCorePart: () => void = () => {
         const theBreak: number = pomodoroTime.focus_reStartTime * 10; // 1500 == 25m
         const theTerm_30min: number = theBreak + (pomodoroTime.breakStartTime * 10); // 300 == 5m
-        console.log(theBreak, theTerm_30min);
 
         const pomodoroStartTime: number = Date.now(); // 1970年1月1日0時0分0秒から現在までの経過時間をミリ秒単位で返却
 

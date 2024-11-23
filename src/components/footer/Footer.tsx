@@ -5,7 +5,7 @@ export const Footer = () => {
 
     return (
         <TheFooter>
-            <p><small>Copyright &copy; {nowYear} benjuwan</small></p>
+            <p><small>Copyright &copy; {nowYear} <a href="https://github.com/benjuwan" target="_blank">benjuwan</a></small></p>
         </TheFooter>
     );
 }
@@ -14,8 +14,6 @@ const TheFooter = styled.footer`
 & p {
     text-align: center;
     width: 100%;
-    position: fixed;
-    bottom: 0;
     font-size: 12px;
     line-height: 2;
 }
