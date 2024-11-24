@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useContext, useEffect, useRef } from "react";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
-import { useSoundSrcLoadForiOS } from "../hooks/useSoundSrcLoadForiOS";
 
 import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
@@ -13,13 +12,19 @@ export const Pomodoro = () => {
 
     const { pomodoroTime } = useContext(PomodoroTimeContext);
 
-    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro(startSoundRef, doneSoundRef);
+    const { handlePomodoro, isPomodoroDone, pomodoro, isFocus, isBreak, isBtnActive, handlePause, isPause } = useHandlePomodoro();
 
-    /* 音声再生に関してはiOSの制限が厳しいため明示的かつ確実に音声ファイルのロードを試みる */
-    const { loadAudio, isAudioLoaded } = useSoundSrcLoadForiOS(startSoundRef, doneSoundRef);
     useEffect(() => {
-        loadAudio();
-    }, []);
+        if (isBreak || isPomodoroDone) {
+            doneSoundRef.current?.play();
+            return;
+        }
+
+        if (isFocus && !isPomodoroDone) {
+            startSoundRef.current?.play();
+            return;
+        }
+    }, [isFocus, isBreak]);
 
     return (
         <ThePomodoro>
@@ -33,7 +38,7 @@ export const Pomodoro = () => {
             }
             {isBtnActive ?
                 <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button className={isAudioLoaded ? 'isAudioLoaded' : ''} type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
+                <button type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
             }
             <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
@@ -97,10 +102,6 @@ padding: 0 2.5%;
             color: #333;
             background-color: #fff;
         }
-    }
-
-    &.isAudioLoaded {
-        color: #73e1ff;
     }
 }
 

@@ -3,10 +3,7 @@ import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
-type handlePomodoroType = (
-    startSoundRef: React.MutableRefObject<HTMLAudioElement | null>,
-    doneSoundRef: React.MutableRefObject<HTMLAudioElement | null>
-) => {
+type handlePomodoroType = () => {
     handlePomodoro: () => void;
     isBreak: boolean;
     isFocus: boolean;
@@ -17,7 +14,7 @@ type handlePomodoroType = (
     isPause: boolean;
 }
 
-export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRef) => {
+export const useHandlePomodoro: handlePomodoroType = () => {
     const pomodoroTerm: number = 4;
 
     const { setPomodoroStart } = useContext(PomodoroStartContext);
@@ -47,43 +44,14 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
         clearInterval(theInterval);
         pomodoroCounter = 1;
         setPomodoro((_prevPomodoro) => 1);
-        if (doneSoundRef.current?.classList.contains('done')) {
-            doneSoundRef.current?.classList.remove('done');
-        }
         setIntervalValue((_prevIntervalValue) => null);
         setBtnActive(false);
-    }
-
-    /* ------------ /// TOFIX：iOS で休憩開始サウンドが再生されない /// ------------ */
-    /* ポモドーロ開始及びモードチェンジ時におけるサウンドエフェクト */
-    type audioElmType = 'startSound' | 'doneSound';
-    const _notice: (audioElmStr: audioElmType) => void = (audioElmStr: audioElmType) => {
-        if (audioElmStr === 'startSound') {
-            if (doneSoundRef.current?.classList.contains('done')) {
-                doneSoundRef.current?.classList.remove('done'); // 初期化
-            }
-
-            startSoundRef.current?.play();
-        }
-
-        if (audioElmStr === 'doneSound') {
-            if (doneSoundRef.current?.classList.contains('done')) {
-                return;
-            }
-
-            doneSoundRef.current?.classList.add('done');
-            doneSoundRef.current?.play();
-        }
     }
 
     /* ポモドーロの一時停止及び当該ポモドーロの再スタートに関する処理 */
     const handlePause: () => void = () => {
         isFocus && setFocus(false);
         isBreak && setBreak(false);
-
-        if (doneSoundRef.current?.classList.contains('done')) {
-            doneSoundRef.current?.classList.remove('done'); // 初期化
-        }
 
         if (isPause) {
             setPomodoro((_prevPomodoro) => pomodoro);
@@ -94,7 +62,6 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
         } else {
             handlePomodoro();
         }
-
         // セッター関数は再レンダリングのトリガーなので、初期表示時は（初期設定時の）true のフローに進み、次レンダリング時には false のフローへ進む
         setPause(!isPause);
     }
@@ -125,20 +92,17 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
 
             if (isPomodoroOver) {
                 _initAllReset(theInterval);
-                _notice('doneSound');
                 _ctrlPomodoroSignal();
                 _endPomodoroImgEffect();
                 setPomodoroDone(true);
             }
 
             else if (isBreakTerm) {
-                _notice('doneSound');
                 setFocus(false);
                 setBreak(true);
             }
 
             else if (isReStartTerm) {
-                _notice('startSound');
                 pomodoroCounter++;
                 setPomodoro((_prevPomodoro) => pomodoroCounter);
                 _beginPomodoroImgEffect();
@@ -161,7 +125,6 @@ export const useHandlePomodoro: handlePomodoroType = (startSoundRef, doneSoundRe
             return;
         }
 
-        _notice('startSound');
         _beginPomodoroImgEffect();
 
         setBtnActive(true);
