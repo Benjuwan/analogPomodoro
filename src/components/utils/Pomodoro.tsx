@@ -24,7 +24,15 @@ export const Pomodoro = () => {
             startSoundRef.current?.play();
             return;
         }
-    }, [isFocus, isBreak]);
+    }, [isFocus, isBreak, isPomodoroDone]);
+
+    /* iOS対策：音声の自動再生はユーザーのアクションをトリガーにする必要があるため、以下処理をポモドーロ開始ボタンのクリックイベントハンドラーに仕込む */
+    const initSoundFiles: () => void = () => {
+        if (startSoundRef.current !== null && doneSoundRef.current !== null) {
+            startSoundRef.current.play();
+            doneSoundRef.current.play();
+        }
+    }
 
     return (
         <ThePomodoro>
@@ -38,7 +46,10 @@ export const Pomodoro = () => {
             }
             {isBtnActive ?
                 <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button type="button" onClick={handlePomodoro}>ポモドーロ開始</button>
+                <button type="button" onClick={() => {
+                    initSoundFiles();
+                    handlePomodoro();
+                }}>ポモドーロ開始</button>
             }
             <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
