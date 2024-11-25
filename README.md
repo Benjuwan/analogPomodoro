@@ -45,3 +45,6 @@ export default defineConfig({
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
 - [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
+
+## 参考情報
+[【JavaScript】Safari だけじゃないオーディオ再生の制約と再生開始遅延の解決方法](https://webfrontend.ninja/js-audio-autoplay-policy-and-delay/)
