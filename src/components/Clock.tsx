@@ -4,11 +4,12 @@ import { SelectTerm } from "./utils/SelectTerm";
 import { Pomodoro } from "./utils/Pomodoro";
 import { ClockHands } from "./utils/ClockHands";
 import { ThePie } from "./utils/ThePie";
+import { DigitalClock } from "./DigitalClock";
 import { useCurrTimeCalc } from "./hooks/useCurrTimeCalc";
 
 export const Clock = () => {
   const theClockRef = useRef<HTMLDivElement | null>(null);
-  const { currTimeCalc } = useCurrTimeCalc();
+  const { currTimeCalc, currTime } = useCurrTimeCalc();
 
   useEffect(() => {
     const theInterval: number = currTimeCalc(theClockRef);
@@ -18,6 +19,7 @@ export const Clock = () => {
       clearInterval(theInterval);
       clearTimeout(theTimeout);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -25,11 +27,12 @@ export const Clock = () => {
       <SelectTerm />
       <Pomodoro />
       <TheClock ref={theClockRef} className="clock">
-        <div id="long">&nbsp;</div>
-        <div id="short">&nbsp;</div>
-        <div id="sec">&nbsp;</div>
+        <div className="theClockPart" id="long">&nbsp;</div>
+        <div className="theClockPart" id="short">&nbsp;</div>
+        <div className="theClockPart" id="sec">&nbsp;</div>
         <ClockHands />
         <div className="pomodoroImg"><ThePie /></div>
+        <DigitalClock currTime={currTime} />
       </TheClock>
     </>
   );
@@ -52,7 +55,7 @@ z-index: 0;
     top: 50%;
     left: 50%;
     transform-origin: left top;
-    transform: translate(-50%, -50%);
+    transform: translate(0%, -50%);
     transition: rotate .5s;
     visibility: hidden;
     z-index: -1;
@@ -75,7 +78,7 @@ z-index: 0;
     z-index: 2;
   }
   
-  & div {
+  & .theClockPart {
     border-radius: 16px;
     transform-origin: center left;
     position: absolute;
@@ -114,7 +117,7 @@ width: 400px;
 height: 400px;
 filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
 
-  & div {
+  & .theClockPart {
     &#long {
       width: 180px;
       height: 3px;

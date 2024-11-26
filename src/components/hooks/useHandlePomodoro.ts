@@ -43,18 +43,23 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         setPomodoroStart(false);
         clearInterval(theInterval);
         pomodoroCounter = 1;
-        setPomodoro((_prevPomodoro) => 1);
-        setIntervalValue((_prevIntervalValue) => null);
+        setPomodoro(1);
+        setIntervalValue(null);
         setBtnActive(false);
     }
 
     /* ポモドーロの一時停止及び当該ポモドーロの再スタートに関する処理 */
     const handlePause: () => void = () => {
-        isFocus && setFocus(false);
-        isBreak && setBreak(false);
+        if (isFocus) {
+            setFocus(false);
+        }
+
+        if (isBreak) {
+            setBreak(false);
+        }
 
         if (isPause) {
-            setPomodoro((_prevPomodoro) => pomodoro);
+            setPomodoro(pomodoro);
             alert('ポモドーロが中断されました');
             if (intervalValue !== null) {
                 clearInterval(intervalValue);
@@ -62,6 +67,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
         } else {
             handlePomodoro();
         }
+
         // セッター関数は再レンダリングのトリガーなので、初期表示時は（初期設定時の）true のフローに進み、次レンダリング時には false のフローへ進む
         setPause(!isPause);
     }
@@ -104,7 +110,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
 
             else if (isReStartTerm) {
                 pomodoroCounter++;
-                setPomodoro((_prevPomodoro) => pomodoroCounter);
+                setPomodoro(pomodoroCounter);
                 _beginPomodoroImgEffect();
                 _ctrlPomodoroSignal();
                 clearInterval(theInterval);
@@ -115,7 +121,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
             }
         }, 1000);
 
-        setIntervalValue((_prevIntervalValue) => theInterval);
+        setIntervalValue(theInterval);
     }
 
     const handlePomodoro: () => void = () => {

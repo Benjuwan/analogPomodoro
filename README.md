@@ -34,7 +34,8 @@
 - [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
 
 ## 参考情報
-[【JavaScript】Safari だけじゃないオーディオ再生の制約と再生開始遅延の解決方法](https://webfrontend.ninja/js-audio-autoplay-policy-and-delay/)
+- [【JavaScript】Safari だけじゃないオーディオ再生の制約と再生開始遅延の解決方法](https://webfrontend.ninja/js-audio-autoplay-policy-and-delay/)
+- [ReactでcreateContextとuseContextを同一ファイル内でexportすると警告が出る](https://iwb.jp/react-createcontext-usecontext-file-export-warning/#google_vignette)
 
 ## 備忘録
 
