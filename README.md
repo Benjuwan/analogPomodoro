@@ -6,6 +6,18 @@
 
 - ※複数ページを開いていて「ポモドーロタイマーページのタブが非アクティブな場合」通知機能が働かない場合があります。
 
+---
+- ポモドーロの切替：タスク開始
+![pomodoro-next](https://github.com/user-attachments/assets/d5cb63e8-38f4-49fe-931f-5258d5faf19c)
+
+- ポモドーロの切替：休憩開始
+![pomodoro-break](https://github.com/user-attachments/assets/6a68087b-6af1-408a-ba4c-cc8643643d01)
+
+- ポモドーロの切替：ポモドーロの終了
+![pomodoro-done](https://github.com/user-attachments/assets/e32b0f8d-da59-4dcc-a583-33172b452403)
+
+---
+
 ### ポモドーロとは
 - その日に達成したい1つのタスクを細かく分割する
 1. 分割した1つのタスクを**25分**間集中して行う
