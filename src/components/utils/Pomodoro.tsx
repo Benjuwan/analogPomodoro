@@ -34,6 +34,17 @@ export const Pomodoro = () => {
         }
     }
 
+    const pomodoroStart: () => void = () => {
+        const pomodoroTermTime: number = pomodoroTime.focus_reStartTime + pomodoroTime.breakStartTime;
+        if (pomodoroTermTime > 180) {
+            alert('ポモドーロのタームは30分以内で指定してください');
+            return;
+        }
+
+        initSoundFiles();
+        handlePomodoro();
+    }
+
     return (
         <ThePomodoro>
             {isPomodoroDone ?
@@ -46,10 +57,7 @@ export const Pomodoro = () => {
             }
             {isBtnActive ?
                 <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button type="button" onClick={() => {
-                    initSoundFiles();
-                    handlePomodoro();
-                }}>ポモドーロ開始</button>
+                <button type="button" onClick={pomodoroStart}>ポモドーロ開始</button>
             }
             <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
