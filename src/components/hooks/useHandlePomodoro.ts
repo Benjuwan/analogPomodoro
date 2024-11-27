@@ -125,12 +125,6 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     }
 
     const handlePomodoro: () => void = () => {
-        const pomodoroTermTime: number = pomodoroTime.focus_reStartTime + pomodoroTime.breakStartTime;
-        if (pomodoroTermTime > 180) {
-            alert('ポモドーロのタームは30分以内で指定してください');
-            return;
-        }
-
         _beginPomodoroImgEffect();
 
         setBtnActive(true);
