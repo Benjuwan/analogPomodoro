@@ -58,7 +58,9 @@ z-index: 0;
     transform: translate(0%, -50%);
     transition: rotate .5s;
     visibility: hidden;
-    z-index: -1;
+    z-index: -1; // iOSでのチラつき対策：時計周囲の分針（z-index: -2）より前面に配置
+    opacity: .5; // 透過させて時計周囲の分針を視認できるようにする
+    filter: saturate(3); // 透過させた分の色味調整
 
     & svg {
       transform: scale(4);
