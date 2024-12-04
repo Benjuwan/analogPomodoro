@@ -61,8 +61,6 @@ z-index: 0;
     z-index: -1;
 
     & svg {
-      // will-changeでブラウザに変更予定を知らせる
-      will-change: transform;
       transform: scale(4);
     }
   }

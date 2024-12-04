@@ -43,11 +43,10 @@ export const ClockHands = () => {
 }
 
 const TheClockHands = styled.div`
-width: 100%;
-height: 100%;
-overflow: hidden;
-
 & ul {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     list-style: none;
 
     & li {
