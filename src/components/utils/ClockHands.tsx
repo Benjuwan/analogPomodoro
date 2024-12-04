@@ -44,11 +44,8 @@ export const ClockHands = () => {
 
 const TheClockHands = styled.div`
 & ul {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
     list-style: none;
-
+    
     & li {
         width: 2.5em;
         height: 1px;
@@ -57,6 +54,7 @@ const TheClockHands = styled.div`
         inset: 0;
         background-color: #333;
         transform: translateX(calc(100vw/3));
+        z-index: -2;
     }
 }
 
