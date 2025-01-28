@@ -39,7 +39,7 @@
 - styled-components@6.1.13
 - typescript-eslint@8.12.2
 - typescript@5.6.3
-- vite@5.4.10
+- vite@5.4.14
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
