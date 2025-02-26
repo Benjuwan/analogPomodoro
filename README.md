@@ -28,7 +28,7 @@
 - @eslint/js@9.14.0
 - @types/react-dom@18.3.1
 - @types/react@18.3.12
-- @vitejs/plugin-react@4.3.3
+- @vitejs/plugin-react@1.3.2
 - eslint-plugin-react-hooks@5.0.0
 - eslint-plugin-react-refresh@0.4.14
 - eslint@9.14.0
@@ -39,7 +39,7 @@
 - styled-components@6.1.13
 - typescript-eslint@8.12.2
 - typescript@5.6.3
-- vite@5.4.14
+- vite@6.2.0
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
