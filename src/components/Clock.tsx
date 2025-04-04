@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import { SelectTerm } from "./utils/SelectTerm";
 import { Pomodoro } from "./utils/Pomodoro";
@@ -26,113 +25,14 @@ export const Clock = () => {
     <>
       <SelectTerm />
       <Pomodoro />
-      <TheClock ref={theClockRef} className="clock">
-        <div className="theClockPart" id="long">&nbsp;</div>
-        <div className="theClockPart" id="short">&nbsp;</div>
-        <div className="theClockPart" id="sec">&nbsp;</div>
+      <div ref={theClockRef} className="relative hidden overflow-hidden w-[calc(100vw/1.5)] h-[calc(100vw/1.5)] aspect-square rounded-full bg-[#dadada] mt-[0] mx-auto mb-[2.5em] z-0 before:content[''] before:w-[25px] before:h-[25px] before:rounded-full before:aspect-square before:bg-[#333] before:absolute before:inset-[0] before:m-auto before:z-[2] md:w-[400px] md:h-[400px] md:drop-shadow-[0px 0px 4px rgba(0, 0, 0, .25)]">
+        <div className="rounded-[16px] origin-left absolute top-[50%] left-[50%] z-[1] w-[calc(100vw/3.4)] h-[2px] bg-[#333] transform-[translate(-100%,0%)] md:w-[180px] md:h-[3px]" id="long">&nbsp;</div>
+        <div className="rounded-[16px] origin-left absolute top-[50%] left-[50%] z-[1] w-[calc(100vw/4)] h-[3px] bg-[#333] transform-[translate(-100%,0%)] md:w-[100px] md:h-[5px]" id="short">&nbsp;</div>
+        <div className="rounded-[16px] origin-left absolute top-[50%] left-[50%] z-[1] w-[calc(100vw/3.2)] h-[1px] bg-[#333] transform-[translate(-100%,0%)] md:w-[190px]" id="sec">&nbsp;</div>
         <ClockHands />
-        <div className="pomodoroImg"><ThePie /></div>
+        <div className="pomodoroImg absolute top-[50%] left-[50%] origin-top-left transform-[translate(0%,-50%)] transition-rotate duration-500 invisible -z-1 opacity-[.5] saturate-[3]"><ThePie /></div>
         <DigitalClock currTime={currTime} />
-      </TheClock>
+      </div>
     </>
   );
 }
-
-const TheClock = styled.div`
-position: relative;
-display: none;
-overflow: hidden;
-width: calc(100vw/1.5);
-height: calc(100vw/1.5);
-aspect-ratio: 1/1;
-border-radius: 50%;
-background-color: #dadada;
-margin: 0 auto 2.5em;
-z-index: 0;
-
-  & .pomodoroImg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: left top;
-    transform: translate(0%, -50%);
-    transition: rotate .5s;
-    visibility: hidden;
-    z-index: -1; // iOSでのチラつき対策：時計周囲の分針（z-index: -2）より前面に配置
-    opacity: .5; // 透過させて時計周囲の分針を視認できるようにする
-    filter: saturate(3); // 透過させた分の色味調整
-
-    & svg {
-      transform: scale(4);
-    }
-  }
-
-  &::before {
-    content: "";
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    aspect-ratio: 1 / 1;
-    background-color: #333;
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    z-index: 2;
-  }
-  
-  & .theClockPart {
-    border-radius: 16px;
-    transform-origin: center left;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 1;
-    
-    &#long {
-      width: calc(100vw/3.4);
-      height: 2px;
-      background-color: #333;
-      transform: translate(-100%, 0%);
-    }
-
-    &#short {
-      width: calc(100vw/4);
-      height: 3px;
-      background-color: #333;
-      transform: translate(-100%, 0%);
-    }
-
-    &#sec {
-      width: calc(100vw/3.2);
-      height: 1px;
-      background-color: #333;
-      transform: translate(-100%, 0%);
-    }
-  }
-
-  & .recharts-wrapper {
-    transform: translate(-50%, 0%);
-  }
-
-@media screen and (min-width: 560px) {
-width: 400px;
-height: 400px;
-filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, .25));
-
-  & .theClockPart {
-    &#long {
-      width: 180px;
-      height: 3px;
-    }
-
-    &#short {
-      width: 100px;
-      height: 5px;
-    }
-
-    &#sec {
-      width: 190px;
-    }
-  }
-}
-`;
