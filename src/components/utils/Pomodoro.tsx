@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useContext, useEffect, useRef } from "react";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoro } from "../hooks/useHandlePomodoro";
@@ -46,98 +45,21 @@ export const Pomodoro = () => {
     }
 
     return (
-        <ThePomodoro>
+        <section className="my-[2em] mx-auto text-center px-[2.5%]">
             {isPomodoroDone ?
                 <p>お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
-                    <h2>Pomodoro<br />（{pomodoro}/4）</h2>
-                    {isFocus && <p className="pomodoroFocus">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
-                    {isBreak && <p className="pomodoroBreak">インターバルです。{pomodoroTime.breakStartTime / 6}分間休憩してください。</p>}
+                    <h2 className="text-[1.5rem] tracking-[.25em] leading-[1.5] mb-[2em] lg:text-[20px]">Pomodoro<br />（{pomodoro}/4）</h2>
+                    {isFocus && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#acedff] border-[3px] border-[#73e1ff] lg:text-[16px]">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
+                    {isBreak && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#e9ffbc] border-[3px] border-[#cdff6c] lg:text-[16px]">インターバルです。{pomodoroTime.breakStartTime / 6}分間休憩してください。</p>}
                 </>
             }
             {isBtnActive ?
-                <button className="pauseBtn" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button type="button" onClick={pomodoroStart}>ポモドーロ開始</button>
+                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff] lg:text-[18px] lg:leading-[44px]" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
+                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff] lg:text-[18px] lg:leading-[44px]" type="button" onClick={pomodoroStart}>ポモドーロ開始</button>
             }
             <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
-        </ThePomodoro>
+        </section>
     );
 }
-
-const ThePomodoro = styled.section`
-margin: 2em auto;
-text-align: center;
-padding: 0 2.5%;
-
-& h2 {
-    font-size: 2rem;
-    letter-spacing: .25em;
-    line-height: 1.5;
-    margin-bottom: 2em;
-}
-
-& p {
-    width: fit-content;
-    font-size: 1.6rem;
-    border-radius: .4rem;
-    padding: 1em;
-    margin: 0 auto 2em;
-    background-color: #dadada;
-    border: 3px solid #a8a8a8;
-
-    &.pomodoroFocus {
-        background-color: #acedff;
-        border-color: #73e1ff;
-    }
-    
-    &.pomodoroBreak {
-        background-color: #e9ffbc;
-        border-color: #cdff6c;
-    }
-}
-
-& button {
-    appearance: none;
-    background-color: #333;
-    border: 3px solid transparent;
-    color: #fff;
-    padding: 0 2.5em;
-    font-size: 1.8rem;
-    line-height: 4.4rem;
-    border-radius: .4rem;
-
-    &:disabled{
-        color: #a8a8a8;
-        background-color: #eaeaea;
-        border-color: #a8a8a8;
-    }
-
-    &:not(:disabled){
-        cursor: pointer;
-
-        &:hover {
-            border-color: #333;
-            color: #333;
-            background-color: #fff;
-        }
-    }
-}
-
-@media screen and (min-width:1025px) {
-    & h2 {
-        font-size: 20px;
-    }
-
-    & p {
-        font-size: 16px;
-        border-radius: 4px;
-    }
-
-    & button {
-        font-size: 18px;
-        line-height: 44px;
-        border-radius: 4px;
-    }
-}
-`;

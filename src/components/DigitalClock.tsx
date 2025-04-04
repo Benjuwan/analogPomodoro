@@ -1,25 +1,3 @@
-import styled from "styled-components";
-
 export const DigitalClock = ({ currTime }: { currTime: string }) => {
-    return <TheDigitalClock>{currTime}</TheDigitalClock>;
+    return <section className="digitalClock absolute m-auto inset-[0] transform-[translate(0%,6em)] w-fit h-fit text-[1rem] py-[.25em] px-[1em] text-[#818181] border-[3px] border-[#818181] rounded text-[calc(100vw/40)] md:text-[16px]">{currTime}</section>;
 }
-
-const TheDigitalClock = styled.section`
-position: absolute;
-margin: auto;
-inset: 0;
-transform: translate(0%, 6em);
-width: fit-content;
-height: fit-content;
-padding: .25em 1em;
-color: #818181;
-border: 3px solid #818181;
-border-radius: .4rem;
-font-size: calc(100vw/40);
-font-feature-settings: "palt";
-
-@media screen and (min-width: 560px) {
-    font-size: 16px;
-    border-radius: 4px;
-}
-`;

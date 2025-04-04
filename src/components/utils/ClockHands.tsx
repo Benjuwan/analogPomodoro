@@ -1,11 +1,10 @@
-import styled from "styled-components";
 import { useState } from "react";
 
 const TimeBullet = ({ targetTimeAry }: { targetTimeAry: string[] }) => {
     return (
         <>
             {targetTimeAry.map(clockHand => (
-                <li key={clockHand} style={{ 'rotate': `${clockHand}` }}>&nbsp;</li>
+                <li className="w-[2.5em] h-[1px] absolute m-auto inset-[0] bg-[#333] transform-[translateX(calc(100vw/3))] -z-2 md:transform-[translateX(12.5em)]" key={clockHand} style={{ 'rotate': `${clockHand}` }}>&nbsp;</li>
             ))}
         </>
     )
@@ -27,7 +26,7 @@ export const ClockHands = () => {
     const [theClockHandsSecAry] = useState<string[]>(ClockHandsSecAry);
 
     return (
-        <TheClockHands>
+        <div>
             {theClockHandsMinAry.length > 0 &&
                 <ul>
                     <TimeBullet targetTimeAry={theClockHandsMinAry} />
@@ -38,45 +37,6 @@ export const ClockHands = () => {
                     <TimeBullet targetTimeAry={theClockHandsSecAry} />
                 </ul>
             }
-        </TheClockHands>
+        </div>
     );
 }
-
-const TheClockHands = styled.div`
-& ul {
-    list-style: none;
-    
-    & li {
-        width: 2.5em;
-        height: 1px;
-        position: absolute;
-        margin: auto;
-        inset: 0;
-        background-color: #333;
-        transform: translateX(calc(100vw/3));
-        z-index: -2;
-    }
-}
-
-& .secClockHand {
-    & li {
-        transform: translateX(calc(100vw/2.8));
-        background-color: #818181;
-        mix-blend-mode: darken;
-    }
-}
-
-@media screen and (min-width: 560px) {
-    & ul {
-        & li {
-            transform: translateX(14em);
-        }
-    }
-
-    & .secClockHand {
-        & li {
-            transform: translateX(15em);
-        }
-    }
-}
-`;

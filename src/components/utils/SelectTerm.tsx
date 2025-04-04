@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { ChangeEvent, useContext } from "react";
 import { setPomodoroTimeType } from "./types/ThePomodoroTypes";
 import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
@@ -21,10 +20,10 @@ export const SelectTerm = () => {
     return (
         <>
             {pomodoroStart ||
-                <SelectTermSec>
-                    <div>
-                        <p>タスク時間</p>
-                        <select name="focus" id="focus" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'focus')}>
+                <section className="flex gap-[2em] w-fit my-[2em] mx-auto p-[2em] bg-[#dadada] rounded">
+                    <div className="text-center">
+                        <p className="font-bold">タスク時間</p>
+                        <select name="focus" className="w-full border border-[#818181] rounded mt-1 bg-white" id="focus" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'focus')}>
                             {[...minTerms].reverse().map(term => (
                                 <option key={term} value={term * 6}>{term}</option>
                             ))}
@@ -32,35 +31,14 @@ export const SelectTerm = () => {
                     </div>
                     <div>
                         <p>休憩時間</p>
-                        <select name="break" id="break" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'break')}>
+                        <select name="break"  className="w-full border border-[#818181] rounded mt-1 bg-white" id="break" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'break')}>
                             {minTerms.map(term => (
                                 <option key={term} value={term * 6}>{term}</option>
                             ))}
                         </select>
                     </div>
-                </SelectTermSec>
+                </section>
             }
         </>
     );
 }
-
-const SelectTermSec = styled.section`
-display: flex;
-gap: 2em;
-width: fit-content;
-margin: 2em auto;
-padding: 2em;
-background-color: #dadada;
-border-radius: 4px;
-
-& div {
-    text-align: center;
-    & p {
-        font-weight: bold;
-    }
-
-    & select {
-        width: 100%;
-    }
-}
-`;
