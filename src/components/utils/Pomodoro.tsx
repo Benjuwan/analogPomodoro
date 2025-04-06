@@ -47,7 +47,7 @@ export const Pomodoro = () => {
     return (
         <section className="my-[2em] mx-auto text-center px-[2.5%]">
             {isPomodoroDone ?
-                <p>お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
+                <p className="mb-[1em]">お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
                     <h2 className="text-[1.5rem] tracking-[.25em] leading-[1.5] mb-[2em] lg:text-[20px]">Pomodoro<br />（{pomodoro}/4）</h2>
                     {isFocus && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#acedff] border-[3px] border-[#73e1ff] lg:text-[16px]">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
