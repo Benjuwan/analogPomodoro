@@ -25,19 +25,19 @@
 3. 1と2を繰り返し、4ポモドーロ（2時間）ごとに15〜30分間の休憩を取る
 
 ## 技術構成
-- @eslint/js@9.23.0
-- @tailwindcss/vite@4.1.1
+- @eslint/js@9.24.0
+- @tailwindcss/vite@4.1.3
 - @types/react-dom@18.3.6
 - @types/react@18.3.20
 - @vitejs/plugin-react@1.3.2
 - eslint-plugin-react-hooks@5.2.0
 - eslint-plugin-react-refresh@0.4.19
-- eslint@9.23.0
+- eslint@9.24.0
 - globals@15.15.0
 - react-dom@18.3.1
 - react@18.3.1
 - recharts@2.15.2
-- tailwindcss@4.1.1
+- tailwindcss@4.1.3
 - typescript-eslint@8.29.0
 - typescript@5.6.3
 - vite@6.2.5
