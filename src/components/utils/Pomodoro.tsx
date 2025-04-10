@@ -49,14 +49,14 @@ export const Pomodoro = () => {
             {isPomodoroDone ?
                 <p className="mb-[1em]">お疲れ様でした。<br />ポモドーロ終了です。15〜30分ほど休憩してください。</p> :
                 <>
-                    <h2 className="text-[1.5rem] tracking-[.25em] leading-[1.5] mb-[2em] lg:text-[20px]">Pomodoro<br />（{pomodoro}/4）</h2>
-                    {isFocus && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#acedff] border-[3px] border-[#73e1ff] lg:text-[16px]">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
-                    {isBreak && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#e9ffbc] border-[3px] border-[#cdff6c] lg:text-[16px]">インターバルです。{pomodoroTime.breakStartTime / 6}分間休憩してください。</p>}
+                    <h2 className="text-[1.5rem] tracking-[.25em] leading-[1.5] mb-[2em]">Pomodoro<br />（{pomodoro}/4）</h2>
+                    {isFocus && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#acedff] border-[3px] border-[#73e1ff]">ポモドーロ開始です。{pomodoroTime.focus_reStartTime / 6}分間タスクに集中してください。</p>}
+                    {isBreak && <p className="w-fit text-[1rem] rounded p-[1em] mx-auto mb-[2em] bg-[#e9ffbc] border-[3px] border-[#cdff6c]">インターバルです。{pomodoroTime.breakStartTime / 6}分間休憩してください。</p>}
                 </>
             }
             {isBtnActive ?
-                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff] lg:text-[18px] lg:leading-[44px]" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
-                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff] lg:text-[18px] lg:leading-[44px]" type="button" onClick={pomodoroStart}>ポモドーロ開始</button>
+                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff]" type="button" onClick={handlePause}>{isPause ? '中断' : '再開'}</button> :
+                <button className="appearance-none bg-[#333] border-[3px] rounded border-transparent text-[#fff] px-[2.5em] text-[1.125rem] leading-[2.75rem] disabled:text-[#a8a8a8] disabled:bg-[#eaeaea] disabled:border-[#a8a8a8] not-disabled:cursor-pointer not-disabled:hover:border-[#333] not-disabled:hover:text-[#333] not-disabled:hover:bg-[#fff]" type="button" onClick={pomodoroStart}>ポモドーロ開始</button>
             }
             <audio id="startSound" ref={startSoundRef} src={startSound} hidden>&nbsp;</audio>
             <audio id="doneSound" ref={doneSoundRef} src={doneSound} hidden>&nbsp;</audio>
