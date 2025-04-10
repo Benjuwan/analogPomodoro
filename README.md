@@ -38,9 +38,9 @@
 - react@18.3.1
 - recharts@2.15.2
 - tailwindcss@4.1.3
-- typescript-eslint@8.29.0
+- typescript-eslint@8.29.1
 - typescript@5.6.3
-- vite@6.2.5
+- vite@6.2.6
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
