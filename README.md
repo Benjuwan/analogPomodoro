@@ -25,22 +25,22 @@
 3. 1と2を繰り返し、4ポモドーロ（2時間）ごとに15〜30分間の休憩を取る
 
 ## 技術構成
-- @eslint/js@9.24.0
-- @tailwindcss/vite@4.1.3
-- @types/react-dom@18.3.6
+- @eslint/js@9.26.0
+- @tailwindcss/vite@4.1.5
+- @types/react-dom@18.3.7
 - @types/react@18.3.20
 - @vitejs/plugin-react@1.3.2
 - eslint-plugin-react-hooks@5.2.0
-- eslint-plugin-react-refresh@0.4.19
-- eslint@9.24.0
+- eslint-plugin-react-refresh@0.4.20
+- eslint@9.26.0
 - globals@15.15.0
 - react-dom@18.3.1
 - react@18.3.1
-- recharts@2.15.2
-- tailwindcss@4.1.3
-- typescript-eslint@8.29.1
+- recharts@2.15.3
+- tailwindcss@4.1.5
+- typescript-eslint@8.31.1
 - typescript@5.6.3
-- vite@6.2.6
+- vite@6.3.4
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
@@ -49,8 +49,3 @@
 ## 参考情報
 - [【JavaScript】Safari だけじゃないオーディオ再生の制約と再生開始遅延の解決方法](https://webfrontend.ninja/js-audio-autoplay-policy-and-delay/)
 - [ReactでcreateContextとuseContextを同一ファイル内でexportすると警告が出る](https://iwb.jp/react-createcontext-usecontext-file-export-warning/#google_vignette)
-
-## 備忘録
-
-> [!NOTE]  
-> 当リポジトリ自体をデプロイ先とリンクさせている
