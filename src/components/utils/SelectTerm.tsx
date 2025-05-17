@@ -9,10 +9,10 @@ export const SelectTerm = () => {
     const { pomodoroStart } = useContext(PomodoroStartContext);
     const { pomodoroTime, setPomodoroTime } = useContext(PomodoroTimeContext);
 
-    const handlePomodoroTime: (targetValue: string, type: string) => void = (targetValue: string, type: string) => {
+    const handlePomodoroTime: (targetValue: string, timeStatus: 'focus' | 'break') => void = (targetValue: string, timeStatus: 'focus' | 'break') => {
         const newPomodoroTime: setPomodoroTimeType = {
-            focus_reStartTime: type === 'focus' ? parseInt(targetValue) : pomodoroTime.focus_reStartTime,
-            breakStartTime: type === 'break' ? parseInt(targetValue) : pomodoroTime.breakStartTime
+            focus_reStartTime: timeStatus === 'focus' ? parseInt(targetValue) : pomodoroTime.focus_reStartTime,
+            breakStartTime: timeStatus === 'break' ? parseInt(targetValue) : pomodoroTime.breakStartTime
         }
         setPomodoroTime(newPomodoroTime);
     }
@@ -31,7 +31,7 @@ export const SelectTerm = () => {
                     </div>
                     <div>
                         <p>休憩時間</p>
-                        <select name="break"  className="w-full border border-[#818181] rounded mt-1 bg-white" id="break" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'break')}>
+                        <select name="break" className="w-full border border-[#818181] rounded mt-1 bg-white" id="break" onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePomodoroTime(e.target.value, 'break')}>
                             {minTerms.map(term => (
                                 <option key={term} value={term * 6}>{term}</option>
                             ))}

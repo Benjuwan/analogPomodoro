@@ -12,7 +12,7 @@ type handlePomodoroType = () => {
     isBtnActive: boolean;
     handlePause: () => void;
     isPause: boolean;
-}
+};
 
 export const useHandlePomodoro: handlePomodoroType = () => {
     const pomodoroTerm: number = 4;
