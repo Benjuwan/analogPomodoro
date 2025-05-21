@@ -6,8 +6,8 @@ import startSound from "../../assets/start.mp3"; // [Level Up #3 | universfield]
 import doneSound from "../../assets/done.mp3"; // [Good! | Pixabay](https://pixabay.com/ja/users/pixabay-1/)
 
 export const Pomodoro = () => {
-    const startSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
-    const doneSoundRef: React.MutableRefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
+    const startSoundRef: React.RefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
+    const doneSoundRef: React.RefObject<HTMLAudioElement | null> = useRef<HTMLAudioElement | null>(null);
 
     const { pomodoroTime } = useContext(PomodoroTimeContext);
 

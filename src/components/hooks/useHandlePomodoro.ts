@@ -23,7 +23,7 @@ export const useHandlePomodoro: handlePomodoroType = () => {
     const [isBreak, setBreak] = useState<boolean>(false);
     const [isFocus, setFocus] = useState<boolean>(false);
     const [isPomodoroDone, setPomodoroDone] = useState<boolean>(false);
-    const [pomodoro, setPomodoro] = useState<number>(1);
+    const [pomodoro, setPomodoro] = useState<number>(1); // ポモドーロ（ターム）回数
     let pomodoroCounter: number = pomodoro > 1 ? pomodoro : 1;
     const [isBtnActive, setBtnActive] = useState<boolean>(false);
     const [isPause, setPause] = useState<boolean>(true);

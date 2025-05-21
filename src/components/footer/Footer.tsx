@@ -1,5 +1,7 @@
+import { useMemo } from "react";
+
 export const Footer = () => {
-    const nowYear: number = new Date().getFullYear();
+    const nowYear: number = useMemo(() => new Date().getFullYear(), []);
 
     return (
         <footer>

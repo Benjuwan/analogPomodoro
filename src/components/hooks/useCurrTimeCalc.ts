@@ -40,7 +40,7 @@ export const useCurrTimeCalc = () => {
         setCurrTime(thePresent);
     }
 
-    const currTimeCalc: (theClock: React.MutableRefObject<HTMLDivElement | null>) => number = (theClock: React.MutableRefObject<HTMLDivElement | null>) => {
+    const currTimeCalc: (theClock: React.RefObject<HTMLDivElement | null>) => number = (theClock: React.RefObject<HTMLDivElement | null>) => {
         const hours: Element | null | undefined = theClock.current?.querySelector('#short');
         const minutes: Element | null | undefined = theClock.current?.querySelector('#long');
         const seconds: Element | null | undefined = theClock.current?.querySelector('#sec');
