@@ -3,7 +3,7 @@ import { PomodoroStartContext } from "../../providers/PomodoroStartContext";
 import { PomodoroTimeContext } from "../../providers/PomodoroTimeContext";
 import { useHandlePomodoroImgEffect } from "./useHandlePomodoroImgEffect";
 
-type handlePomodoroType = () => {
+type handlePomodoroType = {
     handlePomodoro: () => void;
     isBreak: boolean;
     isFocus: boolean;
@@ -14,7 +14,7 @@ type handlePomodoroType = () => {
     isPause: boolean;
 };
 
-export const useHandlePomodoro: handlePomodoroType = () => {
+export const useHandlePomodoro = (): handlePomodoroType => {
     const pomodoroTerm: number = 4;
 
     const { setPomodoroStart } = useContext(PomodoroStartContext);
