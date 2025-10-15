@@ -1,17 +1,9 @@
 import { PieChart, Pie, Cell } from 'recharts';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { PomodoroTimeContext } from '../../providers/PomodoroTimeContext';
+// import { TheCustomizedLabelForPie as renderCustomizedLabel } from './TheCustomizedLabelForPie';
 
-// type renderCustomizedLabelType = ({ cx, cy, midAngle, innerRadius, outerRadius, index }: {
-//   cx: number;
-//   cy: number;
-//   midAngle: number;
-//   innerRadius: number;
-//   outerRadius: number;
-//   index: number;
-// }) => JSX.Element;
-
-export const ThePie = () => {
+export const ThePie = memo(() => {
   const { pomodoroTime } = useContext(PomodoroTimeContext);
 
   const data = [
@@ -22,20 +14,6 @@ export const ThePie = () => {
 
   /* 右（transparent）から始点 */
   const COLORS = ['#82ffa0', '#9debff', 'transparent'];
-
-  /* renderCustomizedLabel ：ポモドーロタームの角度数値を確認したいデバック用途の記述 */
-  // const renderCustomizedLabel: renderCustomizedLabelType = ({ cx, cy, midAngle, innerRadius, outerRadius, index }) => {
-  //   const RADIAN = Math.PI / 180;
-  //   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  //   return (
-  //     <text x={x} y={y} fill="#fff" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-  //       {data[index].value}
-  //     </text>
-  //   );
-  // };
 
   return (
     <PieChart width={400} height={400}>
@@ -49,7 +27,7 @@ export const ThePie = () => {
         endAngle={180} // 180deg：常に半円（分度器・半月状態）で表示
         fill="#eaeaea"
         labelLine={false}
-        // label={renderCustomizedLabel}
+      // label={renderCustomizedLabel}
       >
         {data.map((_entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index]} stroke='transparent' />
@@ -57,4 +35,4 @@ export const ThePie = () => {
       </Pie>
     </PieChart>
   );
-}
+});
