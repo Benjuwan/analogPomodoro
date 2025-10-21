@@ -26,11 +26,11 @@
 
 ## 技術構成
 - @eslint/js@9.38.0
-- @tailwindcss/vite@4.1.14
+- @tailwindcss/vite@4.1.15
 - @types/react-dom@19.2.2
 - @types/react@19.2.2
-- @typescript-eslint/eslint-plugin@8.46.1
-- @typescript-eslint/parser@8.46.1
+- @typescript-eslint/eslint-plugin@8.46.2
+- @typescript-eslint/parser@8.46.2
 - @vitejs/plugin-react@5.0.4
 - eslint-plugin-react-hooks@7.0.0
 - eslint-plugin-react-refresh@0.4.24
@@ -40,10 +40,10 @@
 - react-dom@19.2.0
 - react@19.2.0
 - recharts@3.3.0
-- tailwindcss@4.1.14
-- typescript-eslint@8.46.1
+- tailwindcss@4.1.15
+- typescript-eslint@8.46.2
 - typescript@5.9.3
-- vite@7.1.10
+- vite@7.1.11
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
