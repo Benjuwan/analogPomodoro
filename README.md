@@ -25,25 +25,25 @@
 3. 1と2を繰り返し、4ポモドーロ（2時間）ごとに15〜30分間の休憩を取る
 
 ## 技術構成
-- @eslint/js@9.38.0
-- @tailwindcss/vite@4.1.15
+- @eslint/js@9.39.1
+- @tailwindcss/vite@4.1.17
 - @types/react-dom@19.2.2
 - @types/react@19.2.2
-- @typescript-eslint/eslint-plugin@8.46.2
-- @typescript-eslint/parser@8.46.2
-- @vitejs/plugin-react@5.0.4
-- eslint-plugin-react-hooks@7.0.0
+- @typescript-eslint/eslint-plugin@8.46.4
+- @typescript-eslint/parser@8.46.4
+- @vitejs/plugin-react@5.1.0
+- eslint-plugin-react-hooks@7.0.1
 - eslint-plugin-react-refresh@0.4.24
 - eslint-plugin-react@7.37.5
-- eslint@9.38.0
-- globals@16.4.0
+- eslint@9.39.1
+- globals@16.5.0
 - react-dom@19.2.0
 - react@19.2.0
-- recharts@3.3.0
-- tailwindcss@4.1.15
-- typescript-eslint@8.46.2
+- recharts@3.4.1
+- tailwindcss@4.1.17
+- typescript-eslint@8.46.4
 - typescript@5.9.3
-- vite@7.1.11
+- vite@7.2.2
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
