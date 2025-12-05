@@ -28,22 +28,22 @@
 - @eslint/js@9.39.1
 - @tailwindcss/vite@4.1.17
 - @types/react-dom@19.2.3
-- @types/react@19.2.6
-- @typescript-eslint/eslint-plugin@8.47.0
-- @typescript-eslint/parser@8.47.0
+- @types/react@19.2.7
+- @typescript-eslint/eslint-plugin@8.48.1
+- @typescript-eslint/parser@8.48.1
 - @vitejs/plugin-react@5.1.1
 - eslint-plugin-react-hooks@7.0.1
 - eslint-plugin-react-refresh@0.4.24
 - eslint-plugin-react@7.37.5
 - eslint@9.39.1
 - globals@16.5.0
-- react-dom@19.2.0
-- react@19.2.0
-- recharts@3.4.1
+- react-dom@19.2.1
+- react@19.2.1
+- recharts@3.5.1
 - tailwindcss@4.1.17
-- typescript-eslint@8.47.0
+- typescript-eslint@8.48.1
 - typescript@5.9.3
-- vite@7.2.2
+- vite@7.2.6
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
