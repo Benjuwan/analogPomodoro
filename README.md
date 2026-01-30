@@ -2,7 +2,8 @@
 - [analog-pomodoro](https://analog-pomodoro.netlify.app/)
 
 ## 概要
-デジタルでアナログなポモドーロタイマー。ポモドーロタームを表す視覚画像（デフォルト：25分+5分）で直感的に把握できます。タスク開始と休憩開始時に通知（サウンド）が鳴ります。<br>『Google』の「15分ルール」と合わせて使うとチーム開発でも生産性の向上が期待できる（かも？です）。
+デジタルでアナログなポモドーロタイマー。ポモドーロタームを表す視覚画像（デフォルト：25分+5分）で直感的に把握できます。タスク開始と休憩開始時に通知（サウンド）が鳴ります。  
+『Google』の「15分ルール」と合わせて使うとチーム開発でも生産性の向上が期待できる（かも？です）。
 
 - ※複数ページを開いていて「ポモドーロタイマーページのタブが非アクティブな場合」通知機能が働かない場合があります。
 
@@ -28,7 +29,7 @@
 - @eslint/js@9.39.2
 - @tailwindcss/vite@4.1.18
 - @types/react-dom@19.2.3
-- @types/react@19.2.9
+- @types/react@19.2.10
 - @typescript-eslint/eslint-plugin@8.54.0
 - @typescript-eslint/parser@8.54.0
 - @vitejs/plugin-react@5.1.2
@@ -36,7 +37,7 @@
 - eslint-plugin-react-refresh@0.4.26
 - eslint-plugin-react@7.37.5
 - eslint@9.39.2
-- globals@17.1.0
+- globals@17.2.0
 - react-dom@19.2.4
 - react@19.2.4
 - recharts@3.7.0
