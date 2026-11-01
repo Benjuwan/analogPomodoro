@@ -1,4 +1,4 @@
-## analog-pomodoro
+﻿## analog-pomodoro
 - [analog-pomodoro](https://analog-pomodoro.netlify.app/)
 
 ## 概要
@@ -30,21 +30,25 @@
 - @tailwindcss/vite@4.3.3
 - @types/react-dom@19.3.0
 - @types/react@19.3.0
-- @typescript-eslint/eslint-plugin@8.71.1
-- @typescript-eslint/parser@8.71.1
+- @typescript-eslint/eslint-plugin@8.72.1
+- @typescript-eslint/parser@8.72.1
 - @vitejs/plugin-react@5.2.0
 - eslint-plugin-react-hooks@7.1.1
 - eslint-plugin-react-refresh@0.5.7
 - eslint-plugin-react@7.37.5
 - eslint@9.39.5
 - globals@17.13.0
-- react-dom@19.3.0
-- react@19.3.0
+- react-dom@19.3.1
+- react@19.3.1
 - recharts@3.10.1
 - tailwindcss@4.3.3
-- typescript-eslint@8.71.1
+- typescript-eslint@8.72.1
 - typescript@6.0.3
-- vite@8.3.4
+- vite@8.3.5
+
+### 脆弱性対応（overrides）
+- **zod** (`^4.6.6`): `eslint-plugin-react-hooks` の間接依存における High 脆弱性（[GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)）を解消するために `package.json` の `overrides` でバージョンを固定適用しています。親パッケージが修正版に追従した際には `overrides` 設定の削除を検討してください。
+- **minimatch**: `GHSA-g3hv-75wg-m249`（Moderate）について、ESLint 9 系との互換性（ESM default export 廃止による linter クラッシュ防止）のため、`overrides` は適用せず親パッケージ側の公式追従まで静観（現状維持）としています。
 
 ## サウンドソース
 - [Level Up #3 | universfield](https://pixabay.com/ja/users/universfield-28281460/)
