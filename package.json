@@ -31,5 +31,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.32.1",
     "vite": "^8.0.16"
+  },
+  "overrides": {
+    "zod": "^4.6.6"
   }
 }
